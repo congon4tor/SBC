@@ -1,0 +1,107 @@
+<animated-vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:drawable="@drawable/nfc_vector">
+
+
+
+    <target android:name="nfc_inner_path1">
+        <aapt:attr name="android:animation">
+            <set android:ordering="sequentially">
+                <objectAnimator
+                    android:duration="40"
+                    android:interpolator="@android:anim/linear_interpolator"
+                    android:propertyName="trimPathEnd"
+                    android:valueFrom="0"
+                    android:valueTo="0"
+                    android:valueType="floatType"/>
+                <objectAnimator
+                    android:duration="960"
+                    android:interpolator="@android:anim/linear_interpolator"
+                    android:propertyName="trimPathEnd"
+                    android:valueFrom="0.0"
+                    android:valueTo="1.0"
+                    android:valueType="floatType"/>
+            </set>
+        </aapt:attr>
+    </target>
+
+    <target android:name="nfc_inner_path2">
+        <aapt:attr name="android:animation">
+            <set android:ordering="sequentially">
+                <objectAnimator
+                    android:duration="40"
+                    android:interpolator="@android:anim/linear_interpolator"
+                    android:propertyName="trimPathEnd"
+                    android:valueFrom="0"
+                    android:valueTo="0"
+                    android:valueType="floatType"/>
+                <objectAnimator
+                    android:duration="960"
+                    android:interpolator="@android:anim/linear_interpolator"
+                    android:propertyName="trimPathEnd"
+                    android:valueFrom="0.0"
+                    android:valueTo="1.0"
+                    android:valueType="floatType"/>
+            </set>
+        </aapt:attr>
+    </target>
+
+    <target android:name="nfc_inner_path_fill">
+        <aapt:attr name="android:animation">
+            <set android:ordering="sequentially">
+                <objectAnimator
+                    android:duration="1000"
+                    android:interpolator="@android:anim/linear_interpolator"
+                    android:propertyName="fillAlpha"
+                    android:valueFrom="0"
+                    android:valueTo="0"
+                    android:valueType="floatType"/>
+                <objectAnimator
+                    android:duration="250"
+                    android:interpolator="@android:anim/linear_interpolator"
+                    android:propertyName="fillAlpha"
+                    android:valueFrom="0.0"
+                    android:valueTo="1.0"
+                    android:valueType="floatType"/>
+            </set>
+        </aapt:attr>
+    </target>
+
+    <target android:name="nfc_outer_path">
+        <aapt:attr name="android:animation">
+            <set android:ordering="sequentially">
+                <objectAnimator
+                    android:duration="1000"
+                    android:interpolator="@android:anim/linear_interpolator"
+                    android:propertyName="fillAlpha"
+                    android:valueFrom="0"
+                    android:valueTo="0"
+                    android:valueType="floatType"/>
+                <objectAnimator
+                    android:duration="250"
+                    android:interpolator="@android:anim/linear_interpolator"
+                    android:propertyName="fillAlpha"
+                    android:valueFrom="0.0"
+                    android:valueTo="1.0"
+                    android:valueType="floatType"/>
+                <objectAnimator
+                    android:duration="250"
+                    android:interpolator="@android:anim/linear_interpolator"
+                    android:propertyName="fillAlpha"
+                    android:valueFrom="1.0"
+                    android:valueTo="1.0"
+                    android:valueType="floatType"/>
+                <objectAnimator
+                    android:duration="0"
+                    android:interpolator="@android:anim/linear_interpolator"
+                    android:propertyName="fillAlpha"
+                    android:valueFrom="1.0"
+                    android:valueTo="0.0"
+                    android:valueType="floatType"/>
+            </set>
+        </aapt:attr>
+    </target>
+
+</animated-vector>
+

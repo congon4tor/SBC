@@ -1,0 +1,37 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24.0"
+    android:viewportHeight="24.0">
+
+    <path
+        android:name="nfc_inner_path_fill"
+        android:fillColor="?attr/colorPrimary"
+        android:fillAlpha="1"
+        android:pathData="M18,4h-5c-1.1,0 -2,0.9 -2,2v4.28c-0.6,0.35 -1,0.98 -1,1.72 0,1.1 0.9,2 2,2s2,-0.9 2,-2c0,-0.74 -0.4,-1.38 -1,-1.72L13,6h5v12L6,18L6,6h3L9,4L4,4v16h16L20,4z"/>
+
+    <path
+        android:name="nfc_inner_path1"
+        android:strokeColor="?attr/colorPrimary"
+        android:strokeWidth="0.5"
+        android:pathData="M12,14 A 2 2 0 0 0 13 10.25 L13,6 h5 v12 L6,18 L6,6 h3 L9,5"/>
+
+    <path
+        android:name="nfc_inner_path2"
+        android:strokeColor="?attr/colorPrimary"
+        android:strokeWidth="0.5"
+        android:pathData="M12,14 A -2 2 0 0 0 11 10.25 L11,6  A -2 2 0 0 0 13 4 h7 v16 L4,20 L4,4 h5 L9,5"/>
+
+    <group
+        android:name="nfc_outer_group"
+        android:pivotX="12"
+        android:pivotY="12">
+        <path
+            android:name="nfc_outer_path"
+            android:fillColor="?attr/colorPrimary"
+            android:strokeWidth="0.5"
+            android:fillAlpha="1"
+            android:pathData="M22,0 L2,0c-1.1,0 -2,0.9 -2,2v20c0,1.1 0.9,2 2,2h20c1.1,0 2,-0.9 2,-2L24,2c0,-1.1 -0.9,-2 -2,-2zM22,22L2,22L2,2h20v20z"/>
+    </group>
+
+</vector>

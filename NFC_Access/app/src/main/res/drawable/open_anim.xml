@@ -1,0 +1,84 @@
+<animated-vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:drawable="@drawable/open_vector">
+
+
+    <target android:name="open_path">
+        <aapt:attr name="android:animation">
+            <set android:ordering="sequentially">
+                <objectAnimator
+                    android:duration="1500"
+                    android:interpolator="@android:anim/linear_interpolator"
+                    android:propertyName="fillAlpha"
+                    android:valueFrom="0"
+                    android:valueTo="0"
+                    android:valueType="floatType"/>
+                <objectAnimator
+                    android:duration="0"
+                    android:interpolator="@android:anim/linear_interpolator"
+                    android:propertyName="fillAlpha"
+                    android:valueFrom="0"
+                    android:valueTo="1"
+                    android:valueType="floatType"/>
+            </set>
+        </aapt:attr>
+    </target>
+
+    <target android:name="open_group">
+        <aapt:attr name="android:animation">
+            <set android:ordering="sequentially">
+                <objectAnimator
+                    android:duration="1500"
+                    android:interpolator="@android:anim/linear_interpolator"
+                    android:propertyName="scaleX"
+                    android:valueFrom="1"
+                    android:valueTo="1"
+                    android:valueType="floatType"/>
+                <objectAnimator
+                    android:duration="250"
+                    android:interpolator="@android:anim/linear_interpolator"
+                    android:propertyName="scaleX"
+                    android:valueFrom="1"
+                    android:valueTo="1.1"
+                    android:valueType="floatType"/>
+                <objectAnimator
+                    android:duration="100"
+                    android:interpolator="@android:anim/linear_interpolator"
+                    android:propertyName="scaleX"
+                    android:valueFrom="1.1"
+                    android:valueTo="1"
+                    android:valueType="floatType"/>
+            </set>
+        </aapt:attr>
+    </target>
+
+    <target android:name="open_group">
+        <aapt:attr name="android:animation">
+            <set android:ordering="sequentially">
+                <objectAnimator
+                    android:duration="1500"
+                    android:interpolator="@android:anim/linear_interpolator"
+                    android:propertyName="scaleY"
+                    android:valueFrom="1"
+                    android:valueTo="1"
+                    android:valueType="floatType"/>
+                <objectAnimator
+                    android:duration="250"
+                    android:interpolator="@android:anim/linear_interpolator"
+                    android:propertyName="scaleY"
+                    android:valueFrom="1"
+                    android:valueTo="1.1"
+                    android:valueType="floatType"/>
+                <objectAnimator
+                    android:duration="100"
+                    android:interpolator="@android:anim/linear_interpolator"
+                    android:propertyName="scaleY"
+                    android:valueFrom="1.1"
+                    android:valueTo="1"
+                    android:valueType="floatType"/>
+            </set>
+        </aapt:attr>
+    </target>
+</animated-vector>
+

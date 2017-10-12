@@ -1,0 +1,71 @@
+<animated-vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:drawable="@drawable/key_vector">
+
+
+
+    <target android:name="key_path">
+        <aapt:attr name="android:animation">
+            <set android:ordering="sequentially">
+                <objectAnimator
+                    android:duration="1000"
+                    android:interpolator="@android:anim/linear_interpolator"
+                    android:propertyName="fillAlpha"
+                    android:valueFrom="0"
+                    android:valueTo="0"
+                    android:valueType="floatType"/>
+                <objectAnimator
+                    android:duration="500"
+                    android:interpolator="@android:anim/linear_interpolator"
+                    android:propertyName="fillAlpha"
+                    android:valueFrom="0.0"
+                    android:valueTo="1.0"
+                    android:valueType="floatType"/>
+            </set>
+        </aapt:attr>
+    </target>
+
+    <target android:name="key_group">
+        <aapt:attr name="android:animation">
+            <set android:ordering="sequentially">
+                <objectAnimator
+                    android:duration="1250"
+                    android:interpolator="@android:anim/linear_interpolator"
+                    android:propertyName="scaleY"
+                    android:valueFrom="1"
+                    android:valueTo="1"
+                    android:valueType="floatType"/>
+                <objectAnimator
+                    android:duration="250"
+                    android:interpolator="@android:anim/linear_interpolator"
+                    android:propertyName="scaleY"
+                    android:valueFrom="1.0"
+                    android:valueTo="-1.0"
+                    android:valueType="floatType"/>
+            </set>
+        </aapt:attr>
+    </target>
+
+    <target android:name="key_group">
+        <aapt:attr name="android:animation">
+            <set android:ordering="sequentially">
+                <objectAnimator
+                    android:duration="1250"
+                    android:interpolator="@android:anim/linear_interpolator"
+                    android:propertyName="translateY"
+                    android:valueFrom="2"
+                    android:valueTo="2"
+                    android:valueType="floatType"/>
+                <objectAnimator
+                    android:duration="250"
+                    android:interpolator="@android:anim/linear_interpolator"
+                    android:propertyName="translateY"
+                    android:valueFrom="2"
+                    android:valueTo="10"
+                    android:valueType="floatType"/>
+            </set>
+        </aapt:attr>
+    </target>
+
+</animated-vector>
