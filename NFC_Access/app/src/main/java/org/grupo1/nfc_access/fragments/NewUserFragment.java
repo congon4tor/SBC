@@ -8,7 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.grupo1.nfc_access.R;
 
@@ -17,7 +19,7 @@ import org.grupo1.nfc_access.R;
  * Use the {@link NewUserFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NewUserFragment extends Fragment {
+public class NewUserFragment extends Fragment{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -92,6 +94,5 @@ public class NewUserFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
 
 }

@@ -12,13 +12,19 @@
 
     <string name="action_settings">Settings</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <string name="title_activity_splash">SplashActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
 
-    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <!-- Hints for Add new User form-->
+
+    <string name="new_user_form_name_hint">Name</string>
+    <string name="new_user_form_lastname_hint">Last Name</string>
+    <string name="new_user_form_DNI_hint">DNI</string>
+    <string name="new_user_form_accesslevel_hint">Access Level</string>
+
+            <!--Tamaños BBDD para los inputs -->
+    <string name="new_user_form_name_length">50</string>
+    <string name="new_user_form_lastname_length">100</string>
+    <string name="new_user_form_DNI_length">10</string>
+    <string name="new_user_form_accesslevel_length">1</string>
 
 </resources>
