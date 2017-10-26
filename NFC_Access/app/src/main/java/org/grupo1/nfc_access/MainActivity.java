@@ -14,12 +14,13 @@ import android.view.MenuItem;
 
 import org.grupo1.nfc_access.fragments.AboutFragment;
 import org.grupo1.nfc_access.fragments.AddMoneyFragment;
+import org.grupo1.nfc_access.fragments.Listener;
 import org.grupo1.nfc_access.fragments.NewUserFragment;
 import org.grupo1.nfc_access.fragments.OnFragmentInteractionListener;
 import org.grupo1.nfc_access.fragments.PaymentFragment;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener , Listener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,5 +119,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
         //TODO: quitar esto no necesito interaccione entre los fragments
+    }
+
+    @Override
+    public void onDialogDisplayed() {
+
+    }
+
+    @Override
+    public void onDialogDismissed() {
+
     }
 }

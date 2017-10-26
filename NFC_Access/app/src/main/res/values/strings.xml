@@ -33,4 +33,11 @@
     <string name="javier_fernandez">Javier Fernandez</string>
     <string name="ionut_daniel_motofelea">Ionut Daniel Motofelea</string>
 
+    <string name="message_write_error">¡Error grabando tarjeta!</string>
+    <string name="message_write_success">¡Tarjeta grabada correctamente!</string>
+    <string name="message_write_progress">Grabando tarjeta…</string>
+    <string name="message_tag_detected">¡Tarjeta detectada!</string>
+    <string name="message_write_tag">Grabar datos en la tarjeta</string>
+    <string name="message_tap_tag">Aproxime la tarjeta al dispositivo</string>
+
 </resources>
