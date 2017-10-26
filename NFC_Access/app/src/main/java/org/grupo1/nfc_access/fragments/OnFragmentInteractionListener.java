@@ -6,6 +6,8 @@ package org.grupo1.nfc_access.fragments;
 
 import android.net.Uri;
 
+//todo esto lo voy a quitar no necesito interaccion entre fragments
+
 /**
  * This interface must be implemented by activities that contain this
  * fragment to allow an interaction in this fragment to be communicated

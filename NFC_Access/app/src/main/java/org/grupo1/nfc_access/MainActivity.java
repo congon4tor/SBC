@@ -117,6 +117,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-        //TODO:if interaction from fragment needed implement this
+        //TODO: quitar esto no necesito interaccione entre los fragments
     }
 }

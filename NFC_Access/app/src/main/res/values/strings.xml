@@ -26,5 +26,11 @@
     <string name="new_user_form_lastname_length">100</string>
     <string name="new_user_form_DNI_length">10</string>
     <string name="new_user_form_accesslevel_length">1</string>
+    <string name="componentes_del_grupo">Componentes del grupo:</string>
+    <string name="ignacio_dominguez">Ignacio Dominguez</string>
+    <string name="florin_tataru">Florin Tataru</string>
+    <string name="juan_manuel_vicente">Juan Manuel Vicente</string>
+    <string name="javier_fernandez">Javier Fernandez</string>
+    <string name="ionut_daniel_motofelea">Ionut Daniel Motofelea</string>
 
 </resources>
