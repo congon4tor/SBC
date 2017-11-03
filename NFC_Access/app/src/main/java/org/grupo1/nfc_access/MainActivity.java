@@ -1,6 +1,12 @@
 package org.grupo1.nfc_access;
 
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
+import android.nfc.NfcAdapter;
+import android.nfc.Tag;
+import android.nfc.tech.Ndef;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
@@ -9,18 +15,31 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import org.grupo1.nfc_access.fragments.AboutFragment;
 import org.grupo1.nfc_access.fragments.AddMoneyFragment;
 import org.grupo1.nfc_access.fragments.Listener;
+import org.grupo1.nfc_access.fragments.NFCWriteFragment;
 import org.grupo1.nfc_access.fragments.NewUserFragment;
 import org.grupo1.nfc_access.fragments.OnFragmentInteractionListener;
 import org.grupo1.nfc_access.fragments.PaymentFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener , Listener{
+
+
+    public static final String TAG = MainActivity.class.getSimpleName();
+
+
+    private boolean isDialogDisplayed = false;
+
+    private NfcAdapter mNfcAdapter;
+
+    private NFCWriteFragment mNfcWriteFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +62,9 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.main_frame, fragment);
         fragmentTransaction.commit();
+
+
+        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
     }
 
     @Override
@@ -121,13 +143,56 @@ public class MainActivity extends AppCompatActivity
         //TODO: quitar esto no necesito interaccione entre los fragments
     }
 
+
     @Override
     public void onDialogDisplayed() {
 
+        isDialogDisplayed = true;
     }
 
     @Override
     public void onDialogDismissed() {
 
+        isDialogDisplayed = false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
+        IntentFilter ndefDetected = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
+        IntentFilter techDetected = new IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED);
+        IntentFilter[] nfcIntentFilter = new IntentFilter[]{techDetected,tagDetected,ndefDetected};
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+        if(mNfcAdapter!= null)
+            mNfcAdapter.enableForegroundDispatch(this, pendingIntent, nfcIntentFilter, null);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(mNfcAdapter!= null)
+            mNfcAdapter.disableForegroundDispatch(this);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+
+        Log.d(TAG, "onNewIntent: "+intent.getAction());
+
+        if(tag != null) {
+            Toast.makeText(this, getString(R.string.message_tag_detected), Toast.LENGTH_SHORT).show();
+            Ndef ndef = Ndef.get(tag);
+            //TODO diferenciar lectura de escritura
+            if (isDialogDisplayed) {
+                String messageToWrite = "hello world";
+                mNfcWriteFragment = (NFCWriteFragment) getFragmentManager().findFragmentByTag(NFCWriteFragment.TAG);
+                mNfcWriteFragment.onNfcDetected(ndef,messageToWrite);
+            }
+        }
     }
 }
