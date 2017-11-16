@@ -1,20 +1,21 @@
 package org.grupo1.nfc_access.fragments;
 
-import android.content.Context;
-import android.net.Uri;
-import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.grupo1.nfc_access.R;
+import org.grupo1.nfc_access.utils.HTTPHandler;
+import org.json.JSONObject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,14 +24,13 @@ import org.grupo1.nfc_access.R;
  */
 public class NewUserFragment extends Fragment{
 
+    public static final String TAG = NFCWriteFragment.class.getSimpleName();
+
     private FloatingActionButton mBtWrite;
 
     private NFCWriteFragment mNfcWriteFragment;
 
-    private boolean isDialogDisplayed = false;
-    private boolean isWrite = false;
-
-    private NfcAdapter mNfcAdapter;
+    String url = "http://www.google.com";
 
     public NewUserFragment() {
         // Required empty public constructor
@@ -51,7 +51,6 @@ public class NewUserFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mNfcAdapter = NfcAdapter.getDefaultAdapter(getActivity());
     }
 
     @Override
@@ -59,20 +58,38 @@ public class NewUserFragment extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_new_user, container, false);
-        mBtWrite = (FloatingActionButton) v.findViewById(R.id.btn_write);
+        mBtWrite = v.findViewById(R.id.btn_write);
 
         mBtWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                createNewUser();
                 showWriteFragment();
             }
         });
         return v;
     }
 
-    private void showWriteFragment() {
+    private void createNewUser(){
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
-        isWrite = true;
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d(TAG,"Response: " + response.toString());
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d(TAG,"ErrorResponse: " + error.toString());
+
+                    }
+                });
+        HTTPHandler.getInstance(getActivity()).addToRequestQueue(jsObjRequest);
+    }
+
+    private void showWriteFragment() {
 
         mNfcWriteFragment = (NFCWriteFragment) getActivity().getFragmentManager().findFragmentByTag(NFCWriteFragment.TAG);
 

@@ -23,6 +23,7 @@ import android.widget.Toast;
 import org.grupo1.nfc_access.fragments.AboutFragment;
 import org.grupo1.nfc_access.fragments.AddMoneyFragment;
 import org.grupo1.nfc_access.fragments.Listener;
+import org.grupo1.nfc_access.fragments.NFCReadFragment;
 import org.grupo1.nfc_access.fragments.NFCWriteFragment;
 import org.grupo1.nfc_access.fragments.NewUserFragment;
 import org.grupo1.nfc_access.fragments.OnFragmentInteractionListener;
@@ -36,10 +37,12 @@ public class MainActivity extends AppCompatActivity
 
 
     private boolean isDialogDisplayed = false;
+    private boolean isWrite = false;
 
     private NfcAdapter mNfcAdapter;
 
     private NFCWriteFragment mNfcWriteFragment;
+    private NFCReadFragment mNfcReadFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,6 +157,7 @@ public class MainActivity extends AppCompatActivity
     public void onDialogDismissed() {
 
         isDialogDisplayed = false;
+        isWrite = false;
     }
 
     @Override
@@ -188,10 +192,16 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(this, getString(R.string.message_tag_detected), Toast.LENGTH_SHORT).show();
             Ndef ndef = Ndef.get(tag);
             //TODO diferenciar lectura de escritura
-            if (isDialogDisplayed) {
-                String messageToWrite = "hello world";
+            if (isWrite) {
+
+                String messageToWrite = "Hello world";
                 mNfcWriteFragment = (NFCWriteFragment) getFragmentManager().findFragmentByTag(NFCWriteFragment.TAG);
                 mNfcWriteFragment.onNfcDetected(ndef,messageToWrite);
+
+            } else {
+
+                mNfcReadFragment = (NFCReadFragment) getFragmentManager().findFragmentByTag(NFCReadFragment.TAG);
+                mNfcReadFragment.onNfcDetected(ndef);
             }
         }
     }
