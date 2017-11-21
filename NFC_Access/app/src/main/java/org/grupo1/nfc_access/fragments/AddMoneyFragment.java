@@ -3,9 +3,12 @@ package org.grupo1.nfc_access.fragments;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import org.grupo1.nfc_access.R;
 
@@ -22,6 +25,10 @@ public class AddMoneyFragment extends Fragment {
 
     private FloatingActionButton mBtNFC;
     private FloatingActionButton mBtSend;
+    private FloatingActionButton mBtAdd;
+    private FloatingActionButton mBtSub;
+    private EditText moneyEditText;
+    private int moneyToAdd;
 
 
     public AddMoneyFragment() {
@@ -52,6 +59,12 @@ public class AddMoneyFragment extends Fragment {
 
         mBtNFC = v.findViewById(R.id.btn_nfc);
         mBtSend = v.findViewById(R.id.btn_send);
+        mBtAdd = v.findViewById(R.id.btn_more);
+        mBtSub = v.findViewById(R.id.btn_less);
+        moneyEditText = v.findViewById(R.id.addMoney);
+
+        moneyToAdd = 0;
+        moneyEditText.setText(Float.toString(moneyToAdd));
 
         mBtNFC.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +76,34 @@ public class AddMoneyFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 showReadFragment();
+            }
+        });
+        mBtAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                moneyToAdd = getMoneyAmount();
+                if(moneyToAdd>=995){
+                    moneyToAdd=999;
+                    moneyEditText.setText(Integer.toString(moneyToAdd));
+                }else{
+                    moneyToAdd += 5;
+                    moneyEditText.setText(Integer.toString(moneyToAdd));
+                }
+            }
+        });
+        mBtSub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                moneyToAdd = getMoneyAmount();
+                if(moneyToAdd>=5){
+                    moneyToAdd -= 5;
+                    moneyEditText.setText(Integer.toString(moneyToAdd));
+                }else{
+                    moneyToAdd =0;
+                    moneyEditText.setText(Integer.toString(moneyToAdd));
+                }
+
+
             }
         });
 
@@ -80,5 +121,9 @@ public class AddMoneyFragment extends Fragment {
         }
         mNfcReadFragment.show(getActivity().getFragmentManager(),NFCReadFragment.TAG);
 
+    }
+
+    public int getMoneyAmount(){
+        return (Integer.parseInt(moneyEditText.getText().toString()) != 0) ? Integer.parseInt(moneyEditText.getText().toString()) : 0  ;
     }
 }
