@@ -2,6 +2,7 @@ package org.grupo1.nfc_access.fragments;
 
 import android.app.DialogFragment;
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.nfc.FormatException;
 import android.nfc.NdefMessage;
 import android.nfc.tech.Ndef;
@@ -34,12 +35,14 @@ public class NFCReadFragment extends DialogFragment {
 
     private TextView mTvMessage;
     private Listener mListener;
+    private MediaPlayer successSound;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_read,container,false);
+        successSound = MediaPlayer.create(getActivity(), R.raw.correct);
         initViews(view);
         return view;
     }
@@ -64,12 +67,6 @@ public class NFCReadFragment extends DialogFragment {
 
     public void onNfcDetected(Ndef ndef){
         readFromNFC(ndef);
-
-        if (Build.VERSION.SDK_INT >= 26) {
-            createOneShotVibrationUsingVibrationEffect();
-        }else {
-            vibrate();
-        }
     }
 
     private void readFromNFC(Ndef ndef) {
@@ -78,6 +75,12 @@ public class NFCReadFragment extends DialogFragment {
             ndef.connect();
             NdefMessage ndefMessage = ndef.getNdefMessage();
             String message = new String(ndefMessage.getRecords()[0].getPayload());
+            successSound.start();
+            if (Build.VERSION.SDK_INT >= 26) {
+                createOneShotVibrationUsingVibrationEffect();
+            }else {
+                vibrate();
+            }
             Log.d(TAG, "readFromNFC: "+message);
             mTvMessage.setText(message);
             ndef.close();

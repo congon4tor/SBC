@@ -2,6 +2,7 @@ package org.grupo1.nfc_access.fragments;
 
 import android.app.DialogFragment;
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.nfc.FormatException;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
@@ -37,11 +38,13 @@ public class NFCWriteFragment extends DialogFragment {
     private TextView mTvMessage;
     private ProgressBar mProgress;
     private Listener mListener;
+    private MediaPlayer successSound;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_write,container,false);
+        successSound = MediaPlayer.create(getActivity(), R.raw.correct);
         initViews(view);
         return view;
     }
@@ -66,14 +69,8 @@ public class NFCWriteFragment extends DialogFragment {
     }
 
     public void onNfcDetected(Ndef ndef, String messageToWrite){
-
         mProgress.setVisibility(View.VISIBLE);
         writeToNfc(ndef,messageToWrite);
-        if (Build.VERSION.SDK_INT >= 26) {
-            createOneShotVibrationUsingVibrationEffect();
-        }else {
-            vibrate();
-        }
     }
 
     private void writeToNfc(Ndef ndef, String message){
@@ -87,6 +84,12 @@ public class NFCWriteFragment extends DialogFragment {
                 ndef.writeNdefMessage(new NdefMessage(mimeRecord));
                 ndef.close();
                 //Write Successful
+                successSound.start();
+                if (Build.VERSION.SDK_INT >= 26) {
+                    createOneShotVibrationUsingVibrationEffect();
+                }else {
+                    vibrate();
+                }
                 mTvMessage.setText(getString(R.string.message_write_success));
 
             } catch (IOException | FormatException e) {
