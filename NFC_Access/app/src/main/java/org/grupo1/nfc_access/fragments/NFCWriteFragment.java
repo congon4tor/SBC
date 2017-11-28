@@ -52,7 +52,7 @@ public class NFCWriteFragment extends DialogFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         mListener = (MainActivity)context;
-        mListener.onDialogDisplayed();
+        mListener.onDialogDisplayed(true);
     }
 
     @Override

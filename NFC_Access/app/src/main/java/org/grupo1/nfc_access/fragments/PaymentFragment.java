@@ -1,12 +1,12 @@
 package org.grupo1.nfc_access.fragments;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import org.grupo1.nfc_access.R;
 
@@ -16,16 +16,18 @@ import org.grupo1.nfc_access.R;
  * create an instance of this fragment.
  */
 public class PaymentFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    public static final String TAG = NFCReadFragment.class.getSimpleName();
 
-    private OnFragmentInteractionListener mListener;
+    private NFCReadFragment mNfcReadFragment;
+
+    private FloatingActionButton mBtNFC;
+    private FloatingActionButton mBtSend;
+    private FloatingActionButton mBtAdd;
+    private FloatingActionButton mBtSub;
+    private EditText moneyEditText;
+    private int moneyToAdd;
+
 
     public PaymentFragment() {
         // Required empty public constructor
@@ -35,57 +37,91 @@ public class PaymentFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment PaymentFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static PaymentFragment newInstance(String param1, String param2) {
+    public static PaymentFragment newInstance() {
         PaymentFragment fragment = new PaymentFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_payment, container, false);
+        View v = inflater.inflate(R.layout.fragment_payment, container, false);
+
+        mBtNFC = v.findViewById(R.id.btn_nfc);
+        mBtSend = v.findViewById(R.id.btn_send);
+        mBtAdd = v.findViewById(R.id.btn_more);
+        mBtSub = v.findViewById(R.id.btn_less);
+        moneyEditText = v.findViewById(R.id.addMoney);
+
+        moneyToAdd = 0;
+        moneyEditText.setText(Integer.toString(moneyToAdd));
+
+        mBtNFC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showReadFragment();
+            }
+        });
+        mBtSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showReadFragment();
+            }
+        });
+        mBtAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                moneyToAdd = getMoneyAmount();
+                if(moneyToAdd>=995){
+                    moneyToAdd=999;
+                    moneyEditText.setText(Integer.toString(moneyToAdd));
+                }else{
+                    moneyToAdd += 5;
+                    moneyEditText.setText(Integer.toString(moneyToAdd));
+                }
+            }
+        });
+        mBtSub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                moneyToAdd = getMoneyAmount();
+                if(moneyToAdd>=5){
+                    moneyToAdd -= 5;
+                    moneyEditText.setText(Integer.toString(moneyToAdd));
+                }else{
+                    moneyToAdd =0;
+                    moneyEditText.setText(Integer.toString(moneyToAdd));
+                }
+
+
+            }
+        });
+
+        showReadFragment();
+        return v;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+    private void showReadFragment() {
+
+        mNfcReadFragment =  (NFCReadFragment) getActivity().getFragmentManager().findFragmentByTag(NFCReadFragment.TAG);
+
+        if (mNfcReadFragment == null) {
+
+            mNfcReadFragment = NFCReadFragment.newInstance();
         }
+        mNfcReadFragment.show(getActivity().getFragmentManager(),NFCReadFragment.TAG);
+
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    public int getMoneyAmount(){
+        return (Integer.parseInt(moneyEditText.getText().toString()) != 0) ? Integer.parseInt(moneyEditText.getText().toString()) : 0  ;
     }
 }

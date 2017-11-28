@@ -3,8 +3,6 @@ package org.grupo1.nfc_access.fragments;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +62,7 @@ public class AddMoneyFragment extends Fragment {
         moneyEditText = v.findViewById(R.id.addMoney);
 
         moneyToAdd = 0;
-        moneyEditText.setText(Float.toString(moneyToAdd));
+        moneyEditText.setText(Integer.toString(moneyToAdd));
 
         mBtNFC.setOnClickListener(new View.OnClickListener() {
             @Override

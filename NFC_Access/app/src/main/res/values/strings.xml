@@ -42,8 +42,12 @@
     <string name="message_tap_tag">Aproxime la tarjeta al dispositivo</string>
 
     <string name="message_read_tag">Leer datos de la tarjeta</string>
+    <string name="message_read_error">¡Error leyendo tarjeta!</string>
 
     <string name="add_money_form_money_hint">Creditos actuales</string>
     <string name="add_money_form_add_money_hint">Creditos a añadir</string>
+
+    <string name="payment_money_hint">Creditos actuales</string>
+    <string name="payment_remove_money_hint">Creditos a pagar</string>
 
 </resources>

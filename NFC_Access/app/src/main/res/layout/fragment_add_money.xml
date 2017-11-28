@@ -106,7 +106,7 @@
                 android:layout_marginBottom="16dp"
                 android:layout_marginLeft="30dp"
                 android:layout_alignParentLeft="true"
-                android:src="@drawable/ic_remove_black_24dp"/>
+                android:src="@drawable/ic_remove_white_24dp"/>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/addMoneyWrapper"
@@ -137,7 +137,7 @@
                 android:layout_marginBottom="16dp"
                 android:layout_marginRight="30dp"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/ic_add_black_24dp"/>
+                android:src="@drawable/ic_add_white_24dp"/>
 
         </RelativeLayout>
     </LinearLayout>
@@ -147,7 +147,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_check_black_24dp"
+        android:src="@drawable/ic_check_white_24dp"
         app:layout_anchor="@id/form_layout"
         app:layout_anchorGravity="bottom|right|end" />
 
@@ -156,7 +156,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_nfc_black_24dp"
+        android:src="@drawable/ic_nfc_white_24dp"
         app:layout_anchor="@id/form_layout"
         app:layout_anchorGravity="bottom|left|end" />
 

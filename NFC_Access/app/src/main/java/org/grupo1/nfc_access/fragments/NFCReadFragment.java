@@ -48,7 +48,7 @@ public class NFCReadFragment extends DialogFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         mListener = (MainActivity)context;
-        mListener.onDialogDisplayed();
+        mListener.onDialogDisplayed(false);
     }
 
     @Override
@@ -71,9 +71,9 @@ public class NFCReadFragment extends DialogFragment {
             mTvMessage.setText(message);
             ndef.close();
 
-        } catch (IOException | FormatException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-
+            mTvMessage.setText(R.string.message_read_error);
         }
     }
 }

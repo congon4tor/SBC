@@ -30,7 +30,7 @@ import org.grupo1.nfc_access.fragments.OnFragmentInteractionListener;
 import org.grupo1.nfc_access.fragments.PaymentFragment;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener , Listener{
+        implements NavigationView.OnNavigationItemSelectedListener, Listener{
 
 
     public static final String TAG = MainActivity.class.getSimpleName();
@@ -80,30 +80,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -142,15 +118,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
-        //TODO: quitar esto no necesito interaccione entre los fragments
-    }
-
-
-    @Override
-    public void onDialogDisplayed() {
+    public void onDialogDisplayed(boolean isWrite) {
 
         isDialogDisplayed = true;
+        this.isWrite = isWrite;
     }
 
     @Override
@@ -191,7 +162,7 @@ public class MainActivity extends AppCompatActivity
         if(tag != null) {
             Toast.makeText(this, getString(R.string.message_tag_detected), Toast.LENGTH_SHORT).show();
             Ndef ndef = Ndef.get(tag);
-            //TODO diferenciar lectura de escritura
+            //TODO: diferenciar lectura de escritura
             if (isWrite) {
 
                 String messageToWrite = "Hello world";
