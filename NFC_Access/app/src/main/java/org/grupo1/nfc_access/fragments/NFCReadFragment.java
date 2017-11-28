@@ -5,8 +5,13 @@ import android.content.Context;
 import android.nfc.FormatException;
 import android.nfc.NdefMessage;
 import android.nfc.tech.Ndef;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,6 +64,12 @@ public class NFCReadFragment extends DialogFragment {
 
     public void onNfcDetected(Ndef ndef){
         readFromNFC(ndef);
+
+        if (Build.VERSION.SDK_INT >= 26) {
+            createOneShotVibrationUsingVibrationEffect();
+        }else {
+            vibrate();
+        }
     }
 
     private void readFromNFC(Ndef ndef) {
@@ -75,5 +86,17 @@ public class NFCReadFragment extends DialogFragment {
             e.printStackTrace();
             mTvMessage.setText(R.string.message_read_error);
         }
+    }
+
+    private void vibrate() {
+        Vibrator mVibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+        mVibrator.vibrate(200);
+    }
+
+    @RequiresApi(api = 26)
+    private void createOneShotVibrationUsingVibrationEffect() {
+        Vibrator mVibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+        VibrationEffect effect = VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE);
+        mVibrator.vibrate(effect);
     }
 }
