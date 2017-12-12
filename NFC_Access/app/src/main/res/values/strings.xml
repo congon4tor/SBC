@@ -50,4 +50,6 @@
     <string name="payment_money_hint">Creditos actuales</string>
     <string name="payment_remove_money_hint">Creditos a pagar</string>
 
+    <string name="serverhost">http://138.100.215.222:5000</string>
+
 </resources>

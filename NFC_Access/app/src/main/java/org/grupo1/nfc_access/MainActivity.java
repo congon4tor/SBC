@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity
 
     private boolean isDialogDisplayed = false;
     private boolean isWrite = false;
+    private String messageToWrite = "";
 
     private NfcAdapter mNfcAdapter;
 
@@ -118,10 +119,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onDialogDisplayed(boolean isWrite) {
+    public void onDialogDisplayed(boolean isWrite, String messageToWrite) {
 
         isDialogDisplayed = true;
         this.isWrite = isWrite;
+        Log.d(TAG,messageToWrite);
+        this.messageToWrite = messageToWrite;
     }
 
     @Override
@@ -159,15 +162,15 @@ public class MainActivity extends AppCompatActivity
 
         Log.d(TAG, "onNewIntent: "+intent.getAction());
 
-        if(tag != null) {
+        if(tag != null && isDialogDisplayed) {
             Toast.makeText(this, getString(R.string.message_tag_detected), Toast.LENGTH_SHORT).show();
             Ndef ndef = Ndef.get(tag);
-            //TODO: diferenciar lectura de escritura
             if (isWrite) {
 
-                String messageToWrite = "Hello world";
+                Log.d(TAG, "tag: "+this.messageToWrite);
+
                 mNfcWriteFragment = (NFCWriteFragment) getFragmentManager().findFragmentByTag(NFCWriteFragment.TAG);
-                mNfcWriteFragment.onNfcDetected(ndef,messageToWrite);
+                mNfcWriteFragment.onNfcDetected(ndef,this.messageToWrite);
 
             } else {
 
