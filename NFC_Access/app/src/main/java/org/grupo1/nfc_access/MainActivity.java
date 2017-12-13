@@ -3,7 +3,6 @@ package org.grupo1.nfc_access;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
@@ -16,17 +15,16 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import org.grupo1.nfc_access.fragments.AboutFragment;
 import org.grupo1.nfc_access.fragments.AddMoneyFragment;
+import org.grupo1.nfc_access.fragments.FragmentCommunicator;
 import org.grupo1.nfc_access.fragments.Listener;
 import org.grupo1.nfc_access.fragments.NFCReadFragment;
 import org.grupo1.nfc_access.fragments.NFCWriteFragment;
 import org.grupo1.nfc_access.fragments.NewUserFragment;
-import org.grupo1.nfc_access.fragments.OnFragmentInteractionListener;
 import org.grupo1.nfc_access.fragments.PaymentFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -39,11 +37,14 @@ public class MainActivity extends AppCompatActivity
     private boolean isDialogDisplayed = false;
     private boolean isWrite = false;
     private String messageToWrite = "";
+    private String messageRead = "";
 
     private NfcAdapter mNfcAdapter;
 
     private NFCWriteFragment mNfcWriteFragment;
     private NFCReadFragment mNfcReadFragment;
+
+    FragmentCommunicator fragmentCommunicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,8 +124,10 @@ public class MainActivity extends AppCompatActivity
 
         isDialogDisplayed = true;
         this.isWrite = isWrite;
-        Log.d(TAG,messageToWrite);
-        this.messageToWrite = messageToWrite;
+        if(isWrite){
+            Log.d(TAG,messageToWrite);
+            this.messageToWrite = messageToWrite;
+        }
     }
 
     @Override
@@ -175,8 +178,15 @@ public class MainActivity extends AppCompatActivity
             } else {
 
                 mNfcReadFragment = (NFCReadFragment) getFragmentManager().findFragmentByTag(NFCReadFragment.TAG);
-                mNfcReadFragment.onNfcDetected(ndef);
+                messageRead = mNfcReadFragment.onNfcDetected(ndef);
+                mNfcReadFragment.dismiss();
+                fragmentCommunicator.passTag(messageRead);
             }
         }
     }
+
+    public void passVal(FragmentCommunicator fragmentCommunicator){
+        this.fragmentCommunicator = fragmentCommunicator;
+    }
+
 }

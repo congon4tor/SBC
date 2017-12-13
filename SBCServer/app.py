@@ -76,10 +76,11 @@ def try_access():
             query = "UPDATE ASISTENTE_SALA SET ID_Sala = %s WHERE ASISTENTE_SALA.ID_Asistente = (SELECT ID_Asistente FROM ASISTENTE WHERE ASISTENTE.TAG = %s);"
             cur = mysql.connection.cursor()
             cur.execute(query,[sala,tag])
-            mysql.connection.commit()
+            mysql.connection.commit()#TODO:igual necesito un if
             return jsonify(response = "success")
         except:
             return jsonify(response = "fail")
+        # TODO: METER DATO en el historial
 
 if __name__ == '__main__':
    app.run(debug=True,host= '0.0.0.0')

@@ -38,7 +38,6 @@ public class NFCWriteFragment extends DialogFragment {
         return fragment;
     }
 
-    private String messageToWrite;
     private TextView mTvMessage;
     private ProgressBar mProgress;
     private Listener mListener;
@@ -49,7 +48,8 @@ public class NFCWriteFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_write,container,false);
         Bundle args = getArguments();
-        this.messageToWrite = args.getString("tag");
+        String messageToWrite = args.getString("tag");
+        mListener.onDialogDisplayed(true, messageToWrite);
         successSound = MediaPlayer.create(getActivity(), R.raw.correct);
         initViews(view);
         return view;
@@ -65,7 +65,6 @@ public class NFCWriteFragment extends DialogFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         mListener = (MainActivity)context;
-        mListener.onDialogDisplayed(true, this.messageToWrite);
     }
 
     @Override

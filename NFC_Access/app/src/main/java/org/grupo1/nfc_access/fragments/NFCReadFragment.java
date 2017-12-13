@@ -65,16 +65,16 @@ public class NFCReadFragment extends DialogFragment {
         mListener.onDialogDismissed();
     }
 
-    public void onNfcDetected(Ndef ndef){
-        readFromNFC(ndef);
+    public String onNfcDetected(Ndef ndef){
+        return readFromNFC(ndef);
     }
 
-    private void readFromNFC(Ndef ndef) {
-
+    private String readFromNFC(Ndef ndef) {
+        String message = "";
         try {
             ndef.connect();
             NdefMessage ndefMessage = ndef.getNdefMessage();
-            String message = new String(ndefMessage.getRecords()[0].getPayload());
+            message = new String(ndefMessage.getRecords()[0].getPayload());
             successSound.start();
             if (Build.VERSION.SDK_INT >= 26) {
                 createOneShotVibrationUsingVibrationEffect();
@@ -82,13 +82,14 @@ public class NFCReadFragment extends DialogFragment {
                 vibrate();
             }
             Log.d(TAG, "readFromNFC: "+message);
-            mTvMessage.setText(message);
+            mTvMessage.setText(R.string.message_read_success);
             ndef.close();
 
         } catch (Exception e) {
             e.printStackTrace();
             mTvMessage.setText(R.string.message_read_error);
         }
+        return message;
     }
 
     private void vibrate() {

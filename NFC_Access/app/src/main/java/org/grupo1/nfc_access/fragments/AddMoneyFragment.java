@@ -3,11 +3,13 @@ package org.grupo1.nfc_access.fragments;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import org.grupo1.nfc_access.MainActivity;
 import org.grupo1.nfc_access.R;
 
 /**
@@ -15,15 +17,15 @@ import org.grupo1.nfc_access.R;
  * Use the {@link AddMoneyFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddMoneyFragment extends Fragment {
+public class AddMoneyFragment extends Fragment{
 
-    public static final String TAG = NFCReadFragment.class.getSimpleName();
+    public static final String TAG = AddMoneyFragment.class.getSimpleName();
 
     private NFCReadFragment mNfcReadFragment;
 
     private FloatingActionButton mBtNFC;
     private FloatingActionButton mBtSend;
-    private FloatingActionButton mBtAdd;
+    public FloatingActionButton mBtAdd;
     private FloatingActionButton mBtSub;
     private EditText moneyEditText;
     private int moneyToAdd;
@@ -54,6 +56,14 @@ public class AddMoneyFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_add_money, container, false);
+
+        ((MainActivity)getActivity()).passVal(new FragmentCommunicator() {
+
+            @Override
+            public void passTag(String tag) {
+
+            }
+        });
 
         mBtNFC = v.findViewById(R.id.btn_nfc);
         mBtSend = v.findViewById(R.id.btn_send);
@@ -121,7 +131,8 @@ public class AddMoneyFragment extends Fragment {
 
     }
 
-    public int getMoneyAmount(){
+    private int getMoneyAmount(){
         return (Integer.parseInt(moneyEditText.getText().toString()) != 0) ? Integer.parseInt(moneyEditText.getText().toString()) : 0  ;
     }
+
 }
