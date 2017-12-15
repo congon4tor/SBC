@@ -42,6 +42,8 @@ def find_user():
         cur = mysql.connection.cursor()
         cur.execute(query,[tag])
         rv = cur.fetchone()
+        if (rv==None):
+            return jsonify(response = "fail")
         return jsonify(response = "success", data = str(rv))
     except:
         return jsonify(response = "fail")
@@ -52,9 +54,12 @@ def set_money():
         json = request.get_json()
         id = json["ID_Asistente"]
         creditos = json["creditos"]
+        modoPago = json["modo_pago"]
         query = "UPDATE ASISTENTE SET creditos = %s WHERE ASISTENTE.ID_Asistente = %s;"
         cur = mysql.connection.cursor()
         cur.execute(query,[creditos,id])
+        query = "INSERT INTO HISTORIAL_CREDITOS (ID_Asistente, creditos, modo_pago) VALUES (%s,%s,%s)"
+        cur.execute(query,[id,creditos,modoPago])
         mysql.connection.commit()
         return jsonify(response = "success")
     except:
@@ -66,8 +71,20 @@ def try_access():
         json = request.get_json()
         tag = json["TAG"]
         sala = json["ID_Sala"]
+        query = "SELECT Nivel_Acceso FROM SALA WHERE ID_Sala = %s;"
+        cur = mysql.connection.cursor()
+        cur.execute(query,[sala])
+        nivelAccesoSala = cur.fetchone().get("Nivel_Acceso")
+        query = "SELECT Nivel_Acceso FROM ASISTENTE WHERE TAG = %s;"
+        cur = mysql.connection.cursor()
+        cur.execute(query,[tag])
+        nivelAccesoAsistente = cur.fetchone().get("Nivel_Acceso")
+        if (nivelAccesoSala>nivelAccesoAsistente):
+            return jsonify(response = "fail", error= "Nivel de acceso insuficiente")
         query = "INSERT INTO ASISTENTE_SALA (ID_Sala, ID_Asistente) VALUES (%s,(SELECT ID_Asistente FROM ASISTENTE WHERE ASISTENTE.TAG = %s)) ;"
         cur = mysql.connection.cursor()
+        cur.execute(query,[sala,tag])
+        query = "INSERT INTO HISTORIAL (ID_Sala, ID_Asistente) VALUES (%s,(SELECT ID_Asistente FROM ASISTENTE WHERE ASISTENTE.TAG = %s)) ;"
         cur.execute(query,[sala,tag])
         mysql.connection.commit()
         return jsonify(response = "success")
@@ -76,11 +93,35 @@ def try_access():
             query = "UPDATE ASISTENTE_SALA SET ID_Sala = %s WHERE ASISTENTE_SALA.ID_Asistente = (SELECT ID_Asistente FROM ASISTENTE WHERE ASISTENTE.TAG = %s);"
             cur = mysql.connection.cursor()
             cur.execute(query,[sala,tag])
-            mysql.connection.commit()#TODO:igual necesito un if
-            return jsonify(response = "success")
+            mysql.connection.commit()
+            if(cur.rowcount == 0):
+                return jsonify(response = "fail", error= "El asistenete ya esta en la sala")
+            else:
+                query = "UPDATE HISTORIAL SET Hora_Salida = NOW() WHERE HISTORIAL.ID_Asistente = (SELECT ID_Asistente FROM ASISTENTE WHERE ASISTENTE.TAG = %s) AND HISTORIAL.Hora_Salida IS NULL ;"
+                cur.execute(query,[tag])
+                query = "INSERT INTO HISTORIAL (ID_Sala, ID_Asistente) VALUES (%s,(SELECT ID_Asistente FROM ASISTENTE WHERE ASISTENTE.TAG = %s)) ;"
+                cur.execute(query,[sala,tag])
+                mysql.connection.commit()
+                return jsonify(response = "success")
         except:
-            return jsonify(response = "fail")
-        # TODO: METER DATO en el historial
+            return jsonify(response = "fail", error="Ha ocurrido un error")
+
+@app.route('/exitRoom', methods = ['POST'])
+def exit_room():
+    try:
+        json = request.get_json()
+        tag = json["TAG"]
+        id = json["ID_Sala"]
+        query = "UPDATE HISTORIAL SET Hora_Salida = NOW() WHERE HISTORIAL.ID_Asistente = (SELECT ID_Asistente FROM ASISTENTE WHERE ASISTENTE.TAG = %s) AND HISTORIAL.ID_Sala = %s AND HISTORIAL.Hora_Salida IS NULL;"
+        cur = mysql.connection.cursor()
+        cur.execute(query,[tag,id])
+        query = "DELETE FROM ASISTENTE_SALA WHERE ASISTENTE_SALA.ID_Asistente = (SELECT ID_Asistente FROM ASISTENTE WHERE ASISTENTE.TAG = %s);"
+        cur = mysql.connection.cursor()
+        cur.execute(query,[tag])
+        mysql.connection.commit()
+        return jsonify(response = "success")
+    except:
+        return jsonify(response = "fail", error="Ha ocurrido un error")
 
 if __name__ == '__main__':
    app.run(debug=True,host= '0.0.0.0')

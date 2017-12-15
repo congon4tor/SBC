@@ -71,7 +71,7 @@ public class NewUserFragment extends Fragment{
         mBtWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createNewUser(mNombreEditText.getText().toString(),mApellidosEditText.getText().toString(),mDNIEditText.getText().toString(),mNivelEditText.getText().toString());
+                createNewUser(mDNIEditText.getText().toString(), mNombreEditText.getText().toString(),mApellidosEditText.getText().toString(),mNivelEditText.getText().toString());
             }
         });
         return v;

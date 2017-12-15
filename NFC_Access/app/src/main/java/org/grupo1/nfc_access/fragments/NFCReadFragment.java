@@ -84,6 +84,7 @@ public class NFCReadFragment extends DialogFragment {
             Log.d(TAG, "readFromNFC: "+message);
             mTvMessage.setText(R.string.message_read_success);
             ndef.close();
+            this.dismiss();
 
         } catch (Exception e) {
             e.printStackTrace();
