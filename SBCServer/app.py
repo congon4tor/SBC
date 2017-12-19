@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_mysqldb import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -10,8 +10,12 @@ app.config['MYSQL_DB'] = 'SBC'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
 
-@app.route('/', methods = ['POST'])
-def hello_world():
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/listUsers', methods = ['POST'])
+def list_users():
     cur = mysql.connection.cursor()
     cur.execute('''SELECT * FROM ASISTENTE''')
     rv = cur.fetchall()
