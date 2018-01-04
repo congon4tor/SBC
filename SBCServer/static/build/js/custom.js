@@ -1,3 +1,4 @@
+
 /**
  * Resize function without multiple trigger
  * 
@@ -1993,9 +1994,7 @@ if (typeof NProgress != 'undefined') {
 				console.log('init_charts');
 			
 				
-				Chart.defaults.global.legend = {
-					enabled: false
-				};
+
 				
 				
 
@@ -2168,33 +2167,70 @@ if (typeof NProgress != 'undefined') {
 			 
 			if ($('#lineChart').length ){	
 			
-			  var ctx = document.getElementById("lineChart");
+			  var ctx = document.getElementById("lineChart").getContext("2d");
 			  var lineChart = new Chart(ctx, {
 				type: 'line',
 				data: {
 				  labels: ["January", "February", "March", "April", "May", "June", "July"],
 				  datasets: [{
-					label: "My First dataset",
-					backgroundColor: "rgba(38, 185, 154, 0.31)",
-					borderColor: "rgba(38, 185, 154, 0.7)",
-					pointBorderColor: "rgba(38, 185, 154, 0.7)",
-					pointBackgroundColor: "rgba(38, 185, 154, 0.7)",
-					pointHoverBackgroundColor: "#fff",
-					pointHoverBorderColor: "rgba(220,220,220,1)",
-					pointBorderWidth: 1,
-					data: [31, 74, 6, 39, 20, 85, 7]
-				  }, {
-					label: "My Second dataset",
-					backgroundColor: "rgba(3, 88, 106, 0.3)",
-					borderColor: "rgba(3, 88, 106, 0.70)",
-					pointBorderColor: "rgba(3, 88, 106, 0.70)",
-					pointBackgroundColor: "rgba(3, 88, 106, 0.70)",
-					pointHoverBackgroundColor: "#fff",
-					pointHoverBorderColor: "rgba(151,187,205,1)",
-					pointBorderWidth: 1,
-					data: [82, 23, 66, 9, 99, 4, 2]
-				  }]
+						label: "Entradas",
+						backgroundColor: "rgba(38, 185, 154, 0.31)",
+						borderColor: "rgba(38, 185, 154, 0.7)",
+						pointBorderColor: "rgba(38, 185, 154, 0.7)",
+						pointBackgroundColor: "rgba(38, 185, 154, 0.7)",
+						pointHoverBackgroundColor: "#fff",
+						pointHoverBorderColor: "rgba(220,220,220,1)",
+						pointBorderWidth: 1,
+						data: [31, 74, 6, 39, 20, 85, 7]
+						}, {
+						label: "Salidas",
+						backgroundColor: "rgba(3, 88, 106, 0.3)",
+						borderColor: "rgba(3, 88, 106, 0.70)",
+						pointBorderColor: "rgba(3, 88, 106, 0.70)",
+						pointBackgroundColor: "rgba(3, 88, 106, 0.70)",
+						pointHoverBackgroundColor: "#fff",
+						pointHoverBorderColor: "rgba(151,187,205,1)",
+						pointBorderWidth: 1,
+						data: [82, 23, 66, 9, 99, 4, 2]
+					}]
 				},
+				options: {
+					responsive: true,
+					title:{
+							display:true,
+							text:'Chart.js Line Chart'
+					},
+					tooltips: {
+							mode: 'index',
+							intersect: false,
+					},
+					hover: {
+							mode: 'nearest',
+							intersect: true
+					},
+					scales: {
+							xAxes: [{
+									display: true,
+									scaleLabel: {
+											display: true,
+											labelString: 'Month'
+									}
+							}],
+							yAxes: [{
+									display: true,
+									scaleLabel: {
+											display: true,
+											labelString: 'Value'
+									}
+							}]
+					},
+					legend: {
+            display: true,
+            labels: {
+                fontColor: 'rgb(255, 99, 132)'
+            }
+        	}
+				}
 			  });
 			
 			}
@@ -2503,93 +2539,7 @@ if (typeof NProgress != 'undefined') {
 				
 			};
 	   
-		/* DATA TABLES */
-			
-			function init_DataTables() {
-				
-				console.log('run_datatables');
-				
-				if( typeof ($.fn.DataTable) === 'undefined'){ return; }
-				console.log('init_DataTables');
-				
-				var handleDataTableButtons = function() {
-				  if ($("#datatable-buttons").length) {
-					$("#datatable-buttons").DataTable({
-					  dom: "Bfrtip",
-					  buttons: [
-						{
-						  extend: "copy",
-						  className: "btn-sm"
-						},
-						{
-						  extend: "csv",
-						  className: "btn-sm"
-						},
-						{
-						  extend: "excel",
-						  className: "btn-sm"
-						},
-						{
-						  extend: "pdfHtml5",
-						  className: "btn-sm"
-						},
-						{
-						  extend: "print",
-						  className: "btn-sm"
-						},
-					  ],
-					  responsive: true
-					});
-				  }
-				};
 
-				TableManageButtons = function() {
-				  "use strict";
-				  return {
-					init: function() {
-					  handleDataTableButtons();
-					}
-				  };
-				}();
-
-				$('#datatable').dataTable();
-
-				$('#datatable-keytable').DataTable({
-				  keys: true
-				});
-
-				$('#datatable-responsive').DataTable();
-
-				$('#datatable-scroller').DataTable({
-				  ajax: "js/datatables/json/scroller-demo.json",
-				  deferRender: true,
-				  scrollY: 380,
-				  scrollCollapse: true,
-				  scroller: true
-				});
-
-				$('#datatable-fixed-header').DataTable({
-				  fixedHeader: true
-				});
-
-				var $datatable = $('#datatable-checkbox');
-
-				$datatable.dataTable({
-				  'order': [[ 1, 'asc' ]],
-				  'columnDefs': [
-					{ orderable: false, targets: [0] }
-				  ]
-				});
-				$datatable.on('draw.dt', function() {
-				  $('checkbox input').iCheck({
-					checkboxClass: 'icheckbox_flat-green'
-				  });
-				});
-
-				TableManageButtons.init();
-				
-			};
-	   
 			/* CHART - MORRIS  */
 		
 		function init_morris_charts() {
@@ -5053,7 +5003,6 @@ if (typeof NProgress != 'undefined') {
 		init_skycons();
 		init_select2();
 		init_validator();
-		init_DataTables();
 		init_chart_doughnut();
 		init_gauge();
 		init_PNotify();

@@ -1,6 +1,7 @@
 <div class="left_col scroll-view">
   <div class="navbar nav_title" style="border: 0;">
-    <a href="index.html" class="site_title"><i class="fa fa-spinner"></i> <span>EZ-Access</span></a>
+    <a href="index.html" class="site_title">
+        <img src="/static/images/ic_nfc_white_48dp_1x.png" alt="..."> <span>EZ-Access</span></a>
   </div>
 
   <div class="clearfix"></div>
@@ -8,7 +9,7 @@
   <!-- menu profile quick info -->
   <div class="profile clearfix">
     <div class="profile_pic">
-      <img src="/static/images/img.jpg" alt="..." class="img-circle profile_img">
+      <img src="/static/images/user.png" alt="..." class="img-circle profile_img">
     </div>
     <div class="profile_info">
       <span>Welcome,</span>
@@ -24,16 +25,16 @@
     <div class="menu_section">
       <h3>General</h3>
       <ul class="nav side-menu">
-        <li><a href="index.html"><i class="fa fa-home"></i> Inicio</a></li>
-        <li><a><i class="fa fa-edit"></i> Salas <span class="fa fa-chevron-down"></span></a>
+        <li><a href="{{ url_for('index') }}"><i class="fa fa-home"></i> Inicio</a></li>
+        <li><a><i class="fa fa-building"></i> Salas <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
-            <li><a href="#">Sala 1</a></li>
-            <li><a href="#">Sala 2</a></li>
+            <li><a href="{{ url_for('sala', id = 4) }}">Sala 1</a></li>
+            <li><a href="{{ url_for('sala', id = 5) }}">Sala 2</a></li>
             <li><a href="#">Sala 3</a></li>
           </ul>
         </li>
-        <li><a href="#"><i class="fa fa-desktop"></i> Asistentes</a></li>
-        <li><a href="#"><i class="fa fa-table"></i> Transacciones</a></li>
+        <li><a href="{{ url_for('asistentes') }}"><i class="fa fa-users"></i> Asistentes</a></li>
+        <li><a href="{{ url_for('transacciones') }}"><i class="fa fa-eur"></i> Transacciones</a></li>
       </ul>
     </div>
   </div>

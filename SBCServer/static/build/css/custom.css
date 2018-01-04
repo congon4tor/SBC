@@ -821,10 +821,10 @@ a:focus {
 .site_title {
     text-overflow: ellipsis;
     overflow: hidden;
-    font-weight: 400;
+    font-weight: 800;
     font-size: 22px;
     width: 100%;
-    color: #ECF0F1 !important;
+    color: #FFF !important;
     margin-left: 0 !important;
     line-height: 59px;
     display: block;

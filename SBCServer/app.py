@@ -10,9 +10,29 @@ app.config['MYSQL_DB'] = 'SBC'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
 
+#############Views##################
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+@app.route('/sala/<id>')
+def sala(id):
+    cur = mysql.connection.cursor()
+    cur.execute('''SELECT * FROM SALA WHERE ID_Sala = %s''',(id))
+    rv = cur.fetchone()
+    return render_template('sala.html', sala = rv)
+
+@app.route('/asistentes')
+def asistentes():
+    return render_template('asistentes.html')
+
+@app.route('/transacciones')
+def transacciones():
+    return render_template('transacciones.html')
+
+#################API#################
 
 @app.route('/listUsers', methods = ['POST'])
 def list_users():
@@ -75,7 +95,7 @@ def try_access():
         json = request.get_json()
         tag = json["TAG"]
         sala = json["ID_Sala"]
-        query = "SELECT Nivel_Acceso FROM SALA WHERE ID_Sala = %s;"
+        query = "SELECT Nivel_Acceso FROM SALA WHERE ID_Sala = %s;"#TODO: ver el aforo
         cur = mysql.connection.cursor()
         cur.execute(query,[sala])
         nivelAccesoSala = cur.fetchone().get("Nivel_Acceso")
@@ -83,7 +103,7 @@ def try_access():
         cur = mysql.connection.cursor()
         cur.execute(query,[tag])
         nivelAccesoAsistente = cur.fetchone().get("Nivel_Acceso")
-        if (nivelAccesoSala>nivelAccesoAsistente):
+        if (nivelAccesoSala>nivelAccesoAsistente):#TODO: comprobar el aforo
             return jsonify(response = "fail", error= "Nivel de acceso insuficiente")
         query = "INSERT INTO ASISTENTE_SALA (ID_Sala, ID_Asistente) VALUES (%s,(SELECT ID_Asistente FROM ASISTENTE WHERE ASISTENTE.TAG = %s)) ;"
         cur = mysql.connection.cursor()
