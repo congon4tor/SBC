@@ -1,10 +1,33 @@
+
+var aforo = JSON.parse($('#my-data').data()["aforo"].replace(/'/g,'"'));
+var entradas = JSON.parse($('#my-data').data()["entradas"].replace("(","[").replace(")","]").replace(/'/g,'"').replace(/(,]$)/g,"]"));
+var salidas = JSON.parse($('#my-data').data()["salidas"].replace("(","[").replace(")","]").replace(/'/g,'"').replace(/(,]$)/g,"]"));
+
+var data_entradas = [{x: 0, y: 0},{x: 1, y: 0},{x: 2, y: 0},{x: 3, y: 0},{x: 4, y: 0},{x: 5, y: 0},{x: 6, y: 0},{x: 7, y: 0},
+    {x: 8, y: 0},{x: 9, y: 0},{x: 10, y: 0},{x: 11, y: 0},{x: 12, y: 0},{x: 13, y: 0},{x: 14, y: 0},{x: 15, y: 0},{x: 16, y: 0},
+    {x: 17, y: 0},{x: 18, y: 0},{x: 19, y: 0},{x: 20, y: 0},{x: 21, y: 0},{x: 22, y: 0},{x: 23, y: 0}]
+
+for (var i in entradas){
+    entrada = entradas[i];
+    data_entradas[entrada.Hora].y = entrada.Entradas;
+}
+
+var data_salidas = [{x: 0, y: 0},{x: 1, y: 0},{x: 2, y: 0},{x: 3, y: 0},{x: 4, y: 0},{x: 5, y: 0},{x: 6, y: 0},{x: 7, y: 0},
+    {x: 8, y: 0},{x: 9, y: 0},{x: 10, y: 0},{x: 11, y: 0},{x: 12, y: 0},{x: 13, y: 0},{x: 14, y: 0},{x: 15, y: 0},{x: 16, y: 0},
+    {x: 17, y: 0},{x: 18, y: 0},{x: 19, y: 0},{x: 20, y: 0},{x: 21, y: 0},{x: 22, y: 0},{x: 23, y: 0}]
+
+for (var i in salidas){
+    salida = salidas[i];
+    data_salidas[salida.Hora].y = salida.Salidas;
+}
+
 var config = {
     type: 'doughnut',
     data: {
         labels:["Asistentes", "Aforo restante"],
         datasets: [
             {
-                data: [300, 100],
+                data: [aforo.Aforo_Act, aforo.Aforo_Restante],
                 backgroundColor: [
                     "#46bb9b",
                     "#bec4c8"
@@ -29,7 +52,7 @@ var config = {
 var config2 = {
     type: 'line',
     data: {
-        labels: ["00:00", "02:00", "10:00", "12:00", "14:00", "18:00", "22:00"],
+        labels: ["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00",],
         datasets: [{
             label: "Entradas",
             backgroundColor: "rgba(38, 185, 154, 0.31)",
@@ -39,7 +62,7 @@ var config2 = {
             pointHoverBackgroundColor: "#fff",
             pointHoverBorderColor: "rgba(220,220,220,1)",
             pointBorderWidth: 1,
-            data: [125, 81, 70, 112, 124, 170, 30]
+            data: data_entradas
         }, {
             label: "Salidas",
             backgroundColor: "rgba(3, 88, 106, 0.3)",
@@ -49,7 +72,7 @@ var config2 = {
             pointHoverBackgroundColor: "#fff",
             pointHoverBorderColor: "rgba(151,187,205,1)",
             pointBorderWidth: 1,
-            data: [81, 125, 158, 112, 70, 36, 84],
+            data: data_salidas,
         }]
     },
     options: {

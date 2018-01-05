@@ -16,19 +16,19 @@
           <div class="tile_count">
             <div class="col-md-3 col-sm-3 col-xs-12 tile_stats_count text-center">
               <span class="count_top"><i class="fa fa-user"></i> Nº de Asistentes</span>
-              <div class="count blue">2500</div>
+              <div class="count blue">{{data.Total_Asistentes}}</div>
             </div>
             <div class="col-md-3 col-sm-3 col-xs-12 tile_stats_count text-center">
               <span class="count_top"><i class="fa fa-sign-in"></i> Nº de Accesos</span>
-              <div class="count blue">123</div>
+              <div class="count blue">{{data.Total_Accesos}}</div>
             </div>
             <div class="col-md-3 col-sm-3 col-xs-12 tile_stats_count text-center">
               <span class="count_top"><i class="fa fa-shopping-cart"></i> Total Pagos</span>
-              <div class="count blue">2,500 €</div>
+              <div class="count blue">{{data.Total_Pagos}} €</div>
             </div>
             <div class="col-md-3 col-sm-3 col-xs-12 tile_stats_count text-center">
               <span class="count_top"><i class="fa fa-users"></i> Media asistentes por sala</span>
-              <div class="count blue">4,567</div>
+              <div class="count blue">{{'%0.2f' % data.Media_Asistentes|float}}</div>
             </div>
           </div>
         </div>
@@ -42,7 +42,7 @@
 
           <div class="row x_title">
             <div class="col-md-12">
-              <h3>Entradas/Salidas a salas <small>Jueves 21 Diciembre</small></h3>
+              <h3>Entradas/Salidas a salas <small class="text-capitalize">{{data.Fecha}}</small></h3>
             </div>
           </div>
 
@@ -61,36 +61,36 @@
             <div class="col-md-12 col-sm-12 col-xs-6">
               <h5>Aforos</h5>
               <div>
-                <p>Sala 1</p>
+                <p>{{data.Top_Salas[0].Nombre}}</p>
                 <div class="">
-                  <div class="progress progress_sm" style="width: 76%;">
-                    <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="99"></div>
+                  <div class="progress progress_sm" style="width: 76%;" data-toggle="tooltip" title="{{'%0.2f' % data.Top_Salas[0].Porcentaje_Aforo|float}} %">
+                    <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="{{'%0.2f' % data.Top_Salas[0].Porcentaje_Aforo|float}}"></div>
                   </div>
                 </div>
               </div>
               <div>
-                <p>Sala 2</p>
+                <p>{{data.Top_Salas[1].Nombre}}</p>
                 <div class="">
-                  <div class="progress progress_sm" style="width: 76%;">
-                    <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="60"></div>
+                  <div class="progress progress_sm" style="width: 76%;" data-toggle="tooltip" title="{{'%0.2f' % data.Top_Salas[1].Porcentaje_Aforo|float}} %">
+                    <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="{{'%0.2f' % data.Top_Salas[1].Porcentaje_Aforo|float}}"></div>
                   </div>
                 </div>
               </div>
             </div>
             <div class="col-md-12 col-sm-12 col-xs-6">
               <div>
-                <p>Sala 3</p>
+                <p>{{data.Top_Salas[2].Nombre}}</p>
                 <div class="">
-                  <div class="progress progress_sm" style="width: 76%;">
-                    <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="40"></div>
+                  <div class="progress progress_sm" style="width: 76%;" data-toggle="tooltip" title="{{'%0.2f' % data.Top_Salas[2].Porcentaje_Aforo|float}} %">
+                    <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="{{'%0.2f' % data.Top_Salas[2].Porcentaje_Aforo|float}}"></div>
                   </div>
                 </div>
               </div>
               <div>
-                <p>Sala 4</p>
+                <p>{{data.Top_Salas[3].Nombre}}</p>
                 <div class="">
-                  <div class="progress progress_sm" style="width: 76%;">
-                    <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="50"></div>
+                  <div class="progress progress_sm" style="width: 76%;" data-toggle="tooltip" title="{{'%0.2f' % data.Top_Salas[3].Porcentaje_Aforo|float}} %">
+                    <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="{{'%0.2f' % data.Top_Salas[3].Porcentaje_Aforo|float}}"></div>
                   </div>
                 </div>
               </div>
@@ -107,6 +107,7 @@
 
 {% block javascripts %}
   {{ super()}}
+  <meta id="my-data" data-entradas="{{data.Datos_Entradas}}" data-salidas="{{data.Datos_Salidas}}">
 
   <script src="{{ url_for('static', filename='build/js/index.js') }}"></script>
   <!-- Chart.js -->

@@ -18,23 +18,23 @@
                 <div class="tile_count">
                     <div class="col-md-3 col-sm-3 col-xs-12 tile_stats_count text-center">
                         <span class="count_top">
-                            <i class="fa fa-sign-in"></i> Nº de asistentes</span>
-                        <div class="count blue">250</div>
+                            <i class="fa fa-user"></i> Nº de asistentes</span>
+                        <div class="count blue">{{data.Total_Asistentes}}</div>
                     </div>
                     <div class="col-md-3 col-sm-3 col-xs-12 tile_stats_count text-center">
                         <span class="count_top">
-                            <i class="fa fa-user"></i> Porcentaje en sala</span>
-                        <div class="count blue">30%</div>
+                            <i class="fa fa-building"></i> Porcentaje en sala</span>
+                        <div class="count blue">{{"%.2f" % data.Porcentaje_En_Sala|float}}%</div>
                     </div>
                     <div class="col-md-3 col-sm-3 col-xs-12 tile_stats_count text-center">
                         <span class="count_top">
-                            <i class="fa fa-shield"></i> ¿Nose que?</span>
-                        <div class="count blue">2</div>
+                            <i class="fa fa-shopping-cart"></i> Media de pagos</span>
+                        <div class="count blue">{{"%.2f" % (data.Total_Pagos/data.Total_Asistentes)|float}}</div>
                     </div>
                     <div class="col-md-3 col-sm-3 col-xs-12 tile_stats_count text-center">
                         <span class="count_top">
-                            <i class="fa fa-clock-o"></i> ¿Media de creditos?</span>
-                        <div class="count blue">4,567</div>
+                            <i class="fa fa-eur"></i> Media de creditos</span>
+                        <div class="count blue">{{"%.2f" % data.Media_Creditos|float}}€</div>
                     </div>
                 </div>
             </div>
@@ -63,110 +63,20 @@
                                 <th>Apellidos</th>
                                 <th>DNI</th>
                                 <th>Nivel de acceso</th>
-                                <th>Creditos<th>
+                                <th>Creditos</th>
                             </tr>
                         </thead>
 
-
                         <tbody>
-                            <tr>
-                                <td>Tiger Nixon</td>
-                                <td>System Architect</td>
-                                <td>Edinburgh</td>
-                                <td>61</td>
-                                <td>2011/04/25</td>
-                            </tr>
-                            <tr>
-                                <td>Shou Itou</td>
-                                <td>Regional Marketing</td>
-                                <td>Tokyo</td>
-                                <td>20</td>
-                                <td>2011/08/14</td>
-                            </tr>
-                            <tr>
-                                <td>Michelle House</td>
-                                <td>Integration Specialist</td>
-                                <td>Sidney</td>
-                                <td>37</td>
-                                <td>2011/06/02</td>
-                            </tr>
-                            <tr>
-                                <td>Suki Burks</td>
-                                <td>Developer</td>
-                                <td>London</td>
-                                <td>53</td>
-                                <td>2009/10/22</td>
-                            </tr>
-                            <tr>
-                                <td>Prescott Bartlett</td>
-                                <td>Technical Author</td>
-                                <td>London</td>
-                                <td>27</td>
-                                <td>2011/05/07</td>
-                            </tr>
-                            <tr>
-                                <td>Gavin Cortez</td>
-                                <td>Team Leader</td>
-                                <td>San Francisco</td>
-                                <td>22</td>
-                                <td>2008/10/26</td>
-                            </tr>
-                            <tr>
-                                <td>Jennifer Acosta</td>
-                                <td>Junior Javascript Developer</td>
-                                <td>Edinburgh</td>
-                                <td>43</td>
-                                <td>2013/02/01</td>
-                            </tr>
-                            <tr>
-                                <td>Cara Stevens</td>
-                                <td>Sales Assistant</td>
-                                <td>New York</td>
-                                <td>46</td>
-                                <td>2011/12/06</td>
-                            </tr>
-                            <tr>
-                                <td>Hermione Butler</td>
-                                <td>Regional Director</td>
-                                <td>London</td>
-                                <td>47</td>
-                                <td>2011/03/21</td>
-                            </tr>
-                            <tr>
-                                <td>Lael Greer</td>
-                                <td>Systems Administrator</td>
-                                <td>London</td>
-                                <td>21</td>
-                                <td>2009/02/27</td>
-                            </tr>
-                            <tr>
-                                <td>Jonas Alexander</td>
-                                <td>Developer</td>
-                                <td>San Francisco</td>
-                                <td>30</td>
-                                <td>2010/07/14</td>
-                            </tr>
-                            <tr>
-                                <td>Shad Decker</td>
-                                <td>Regional Director</td>
-                                <td>Edinburgh</td>
-                                <td>51</td>
-                                <td>2008/11/13</td>
-                            </tr>
-                            <tr>
-                                <td>Michael Bruce</td>
-                                <td>Javascript Developer</td>
-                                <td>Singapore</td>
-                                <td>29</td>
-                                <td>2011/06/27</td>
-                            </tr>
-                            <tr>
-                                <td>Donna Snider</td>
-                                <td>Customer Support</td>
-                                <td>New York</td>
-                                <td>27</td>
-                                <td>2011/01/25</td>
-                            </tr>
+                            {% for asistente in data.Asistentes %}
+                                <tr>
+                                    <td>{{asistente.Nombre}}</td>
+                                    <td>{{asistente.Apellidos}}</td>
+                                    <td>{{asistente.DNI}}</td>
+                                    <td>{{asistente.Nivel_Acceso}}</td>
+                                    <td>{{asistente.creditos}}</td>
+                                </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -180,7 +90,7 @@
 {% block javascripts %} 
 {{ super()}}
 
-<script src="{{ url_for('static', filename='build/js/sala.js') }}"></script>
+<script src="{{ url_for('static', filename='build/js/asistentes.js') }}"></script>
 <!-- Chart.js -->
 <script src="{{ url_for('static', filename='vendors/Chart.js/dist/Chart.bundle.min.js') }}"></script>
 <!-- Datatables -->

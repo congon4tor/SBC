@@ -28,9 +28,9 @@
         <li><a href="{{ url_for('index') }}"><i class="fa fa-home"></i> Inicio</a></li>
         <li><a><i class="fa fa-building"></i> Salas <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
-            <li><a href="{{ url_for('sala', id = 4) }}">Sala 1</a></li>
-            <li><a href="{{ url_for('sala', id = 5) }}">Sala 2</a></li>
-            <li><a href="#">Sala 3</a></li>
+            {% for sala in data.Sidebar %}
+              <li><a href="{{ url_for('sala', id = sala.ID_Sala) }}">{{sala.Nombre_Sala}}</a></li>
+            {% endfor %}
           </ul>
         </li>
         <li><a href="{{ url_for('asistentes') }}"><i class="fa fa-users"></i> Asistentes</a></li>

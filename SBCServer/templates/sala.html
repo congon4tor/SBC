@@ -1,8 +1,8 @@
 {% extends "base_site.html" %} 
 
-{% block title %} {{sala.Nombre}} {% endblock title %} 
+{% block title %} {{data.Sala.Nombre}} {% endblock title %} 
 
-{% block top_nav_title %}{{sala.Nombre}}{% endblock top_nav_title %} 
+{% block top_nav_title %}{{data.Sala.Nombre}}{% endblock top_nav_title %} 
 
 {% block stylesheets %} 
 {{ super() }} 
@@ -19,22 +19,22 @@
                     <div class="col-md-3 col-sm-3 col-xs-12 tile_stats_count text-center">
                         <span class="count_top">
                             <i class="fa fa-sign-in"></i> Nº de accesos hoy</span>
-                        <div class="count blue">250</div>
+                        <div class="count blue">{{data.Accesos_Hoy}}</div>
                     </div>
                     <div class="col-md-3 col-sm-3 col-xs-12 tile_stats_count text-center">
                         <span class="count_top">
                             <i class="fa fa-user"></i> Nº de asistentes ahora</span>
-                        <div class="count blue">123</div>
+                        <div class="count blue">{{data.Sala.Aforo_Act}}</div>
                     </div>
                     <div class="col-md-3 col-sm-3 col-xs-12 tile_stats_count text-center">
                         <span class="count_top">
                             <i class="fa fa-shield"></i> Nivel de acceso</span>
-                        <div class="count blue">2</div>
+                        <div class="count blue">{{data.Sala.Nivel_Acceso}}</div>
                     </div>
                     <div class="col-md-3 col-sm-3 col-xs-12 tile_stats_count text-center">
                         <span class="count_top">
-                            <i class="fa fa-clock-o"></i> Media del tiempo en sala</span>
-                        <div class="count blue">4,567</div>
+                            <i class="fa fa-clock-o"></i> Media de tiempo en sala</span>
+                        <div class="count blue">{{"%.2f"% data.Tiempo_Medio|float}}</div>
                     </div>
                 </div>
             </div>
@@ -45,7 +45,7 @@
         <div class="col-md-6 col-sm-6 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>Aforo 75%</h2>
+                    <h2>Aforo {{"%.2f" % data.Porcentaje_Aforo|float}}%</h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li>
                             <a class="collapse-link">
@@ -56,7 +56,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <div style="position:absolute; top:60%; left:50%; transform: translate(-50%,0); font-size:3.5vw;">75%</div>
+                    <div style="position:absolute; top:60%; left:50%; transform: translate(-50%,0); font-size:3.5vw;">{{"%.2f" % data.Porcentaje_Aforo|float}}%</div>
                     <canvas id="canvas" style="width: 359px; height: 179px;" width="359" height="179"></canvas>
                 </div>
             </div>
@@ -109,104 +109,15 @@
 
 
                         <tbody>
-                            <tr>
-                                <td>Tiger Nixon</td>
-                                <td>System Architect</td>
-                                <td>Edinburgh</td>
-                                <td>61</td>
-                                <td>2011/04/25</td>
-                            </tr>
-                            <tr>
-                                <td>Shou Itou</td>
-                                <td>Regional Marketing</td>
-                                <td>Tokyo</td>
-                                <td>20</td>
-                                <td>2011/08/14</td>
-                            </tr>
-                            <tr>
-                                <td>Michelle House</td>
-                                <td>Integration Specialist</td>
-                                <td>Sidney</td>
-                                <td>37</td>
-                                <td>2011/06/02</td>
-                            </tr>
-                            <tr>
-                                <td>Suki Burks</td>
-                                <td>Developer</td>
-                                <td>London</td>
-                                <td>53</td>
-                                <td>2009/10/22</td>
-                            </tr>
-                            <tr>
-                                <td>Prescott Bartlett</td>
-                                <td>Technical Author</td>
-                                <td>London</td>
-                                <td>27</td>
-                                <td>2011/05/07</td>
-                            </tr>
-                            <tr>
-                                <td>Gavin Cortez</td>
-                                <td>Team Leader</td>
-                                <td>San Francisco</td>
-                                <td>22</td>
-                                <td>2008/10/26</td>
-                            </tr>
-                            <tr>
-                                <td>Jennifer Acosta</td>
-                                <td>Junior Javascript Developer</td>
-                                <td>Edinburgh</td>
-                                <td>43</td>
-                                <td>2013/02/01</td>
-                            </tr>
-                            <tr>
-                                <td>Cara Stevens</td>
-                                <td>Sales Assistant</td>
-                                <td>New York</td>
-                                <td>46</td>
-                                <td>2011/12/06</td>
-                            </tr>
-                            <tr>
-                                <td>Hermione Butler</td>
-                                <td>Regional Director</td>
-                                <td>London</td>
-                                <td>47</td>
-                                <td>2011/03/21</td>
-                            </tr>
-                            <tr>
-                                <td>Lael Greer</td>
-                                <td>Systems Administrator</td>
-                                <td>London</td>
-                                <td>21</td>
-                                <td>2009/02/27</td>
-                            </tr>
-                            <tr>
-                                <td>Jonas Alexander</td>
-                                <td>Developer</td>
-                                <td>San Francisco</td>
-                                <td>30</td>
-                                <td>2010/07/14</td>
-                            </tr>
-                            <tr>
-                                <td>Shad Decker</td>
-                                <td>Regional Director</td>
-                                <td>Edinburgh</td>
-                                <td>51</td>
-                                <td>2008/11/13</td>
-                            </tr>
-                            <tr>
-                                <td>Michael Bruce</td>
-                                <td>Javascript Developer</td>
-                                <td>Singapore</td>
-                                <td>29</td>
-                                <td>2011/06/27</td>
-                            </tr>
-                            <tr>
-                                <td>Donna Snider</td>
-                                <td>Customer Support</td>
-                                <td>New York</td>
-                                <td>27</td>
-                                <td>2011/01/25</td>
-                            </tr>
+                            {% for acceso in data.Accesos %}
+                                <tr>
+                                    <td>{{acceso.Nombre}}</td>
+                                    <td>{{acceso.Apellidos}}</td>
+                                    <td>{{acceso.DNI}}</td>
+                                    <td>{{acceso.Hora_Entrada}}</td>
+                                    <td>{{acceso.Hora_Salida}}</td>
+                                </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -219,6 +130,8 @@
 
 {% block javascripts %} 
 {{ super()}}
+<meta id="my-data" data-aforo="{{data.Aforo}}" data-entradas="{{data.Datos_Entradas}}" data-salidas="{{data.Datos_Salidas}}">
+
 
 <script src="{{ url_for('static', filename='build/js/sala.js') }}"></script>
 <!-- Chart.js -->
