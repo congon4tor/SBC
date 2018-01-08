@@ -2,9 +2,13 @@
 var incremento = $('#my-data').data()["incremento"];
 var pagosHoy = $('#my-data').data()["pagoshoy"];
 var pagosAyer = $('#my-data').data()["pagosayer"];
+
 if(pagosHoy>pagosAyer){
     pagosHoy = 100;
     pagosAyer = 0;
+}else if(pagosAyer == 0){
+    pagosHoy = 0;
+    pagosAyer = 100;
 }
 var cargas = JSON.parse($('#my-data').data()["cargas"].replace("(","[").replace(")","]").replace(/'/g,'"').replace(/(,]$)/g,"]"));
 var pagos = JSON.parse($('#my-data').data()["pagos"].replace("(","[").replace(")","]").replace(/'/g,'"').replace(/(,]$)/g,"]"));
@@ -15,7 +19,9 @@ var data_cargas = [{x: 0, y: 0},{x: 1, y: 0},{x: 2, y: 0},{x: 3, y: 0},{x: 4, y:
 
 for (var i in cargas){
     carga = cargas[i];
-    data_cargas[carga.Hora].y = carga.Cargas;
+    if (carga.Hora !== ""){
+        data_cargas[carga.Hora].y = carga.Cargas;
+    }
 }
 
 var data_pagos = [{x: 0, y: 0},{x: 1, y: 0},{x: 2, y: 0},{x: 3, y: 0},{x: 4, y: 0},{x: 5, y: 0},{x: 6, y: 0},{x: 7, y: 0},
@@ -24,7 +30,9 @@ var data_pagos = [{x: 0, y: 0},{x: 1, y: 0},{x: 2, y: 0},{x: 3, y: 0},{x: 4, y: 
 
 for (var i in pagos){
     pago = pagos[i];
-    data_pagos[pago.Hora].y = pago.Pagos;
+    if (pago.Hora !== ""){
+        data_pagos[pago.Hora].y = pago.Pagos;
+    }
 }
 
 var config = {
@@ -48,6 +56,7 @@ var config = {
     	rotation: 1 * Math.PI,
         circumference: 1 * Math.PI,
         responsive: true,
+        tooltips: false,
         legend: {
             display:true,
             position: 'bottom'

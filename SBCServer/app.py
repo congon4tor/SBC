@@ -131,7 +131,7 @@ def getDataTransacciones():
     cur.execute('''SELECT (SUM(creditos)/COUNT(ID_Asistente)) AS Media_Creditos FROM ASISTENTE''')
     rv = cur.fetchone()
     data.update(rv)
-    cur.execute('''SELECT *,(Total_Creditos_Hoy/Total_Creditos_Ayer*100) AS Incremento_Ventas FROM (SELECT COALESCE(SUM(creditos),0) AS Total_Creditos_Hoy FROM HISTORIAL_CREDITOS WHERE DATE(hora) = CURDATE() AND modo_pago=1) AS HOY JOIN (SELECT COALESCE(SUM(creditos),0) AS Total_Creditos_Ayer FROM HISTORIAL_CREDITOS WHERE DATE(hora) = CURDATE()-1 AND modo_pago=1) AS AYER''')
+    cur.execute('''SELECT *,COALESCE(Total_Creditos_Hoy/Total_Creditos_Ayer*100,0) AS Incremento_Ventas FROM (SELECT COALESCE(SUM(creditos),0) AS Total_Creditos_Hoy FROM HISTORIAL_CREDITOS WHERE DATE(hora) = CURDATE() AND modo_pago=1) AS HOY JOIN (SELECT COALESCE(SUM(creditos),0) AS Total_Creditos_Ayer FROM HISTORIAL_CREDITOS WHERE DATE(hora) = CURDATE()-1 AND modo_pago=1) AS AYER''')
     rv = cur.fetchone()
     data.update({"Incremento_Ventas":float(rv["Incremento_Ventas"])})
     data.update({"Total_Creditos_Hoy":float(rv["Total_Creditos_Hoy"])})
@@ -142,12 +142,20 @@ def getDataTransacciones():
     cur.execute('''SELECT SUM(creditos) AS Cargas, HOUR(hora) AS Hora FROM (SELECT creditos, hora FROM HISTORIAL_CREDITOS WHERE DATE(hora) = CURDATE() AND modo_pago=0) AS CARGAS''')
     rv = cur.fetchall()
     for r in rv:
-        r["Cargas"]=float(r["Cargas"])
+        if r["Cargas"] != None:
+            r["Cargas"]=float(r["Cargas"])
+        else:
+            r["Cargas"]=""
+            r["Hora"]=""
     data.update({"Datos_Cargas":rv})
     cur.execute('''SELECT SUM(creditos) AS Pagos, HOUR(hora) AS Hora FROM (SELECT creditos, hora FROM HISTORIAL_CREDITOS WHERE DATE(hora) = CURDATE() AND modo_pago=1) AS PAGOS''')
     rv = cur.fetchall()
     for r in rv:
-        r["Pagos"]=float(r["Pagos"])
+        if r["Pagos"] != None:
+            r["Pagos"]=float(r["Pagos"])
+        else:
+            r["Cargas"]=""
+            r["Hora"]=""
     data.update({"Datos_Pagos":rv})
     cur.execute('''SELECT ASISTENTE.Nombre, ASISTENTE.Apellidos, ASISTENTE.DNI, HISTORIAL_CREDITOS.hora, HISTORIAL_CREDITOS.creditos, HISTORIAL_CREDITOS.modo_pago FROM HISTORIAL_CREDITOS JOIN ASISTENTE  ON HISTORIAL_CREDITOS.ID_Asistente = ASISTENTE.ID_Asistente''')
     rv = cur.fetchall()

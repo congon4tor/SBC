@@ -75,7 +75,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <div style="position:absolute; top:60%; left:50%; transform: translate(-50%,0); font-size:2.8vw;"><i class="fa fa-arrow-up"></i> {{"%.2f" % data.Incremento_Ventas|float}}%</div>
+                    <div id="porcentaje" style="position:absolute; top:60%; left:50%; transform: translate(-50%,0); font-size:2.8vw;"><i class="fa fa-arrow-up"></i>     {% if data.Incremento_Ventas == 0 %}--.--{%else%}{{"%.2f" % data.Incremento_Ventas|float}}{% endif %}%</div>
                     <canvas id="canvas" style="width: 359px; height: 179px;" width="359" height="179"></canvas>
                 </div>
             </div>
