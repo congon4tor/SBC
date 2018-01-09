@@ -145,6 +145,7 @@ public class AddMoneyFragment extends Fragment{
                 jsonObj.put("ID_Asistente", idAsistente);
                 jsonObj.put("creditos", creditos+moneyToAdd);
                 jsonObj.put("modo_pago", 0);
+                jsonObj.put("movimiento", moneyToAdd);
                 Log.d(TAG,jsonObj.toString());
 
                 JsonObjectRequest jsObjRequest = new JsonObjectRequest
@@ -211,8 +212,8 @@ public class AddMoneyFragment extends Fragment{
                                     nameEditText.setText(json.getString("Nombre"));
                                     lastnameEditText.setText(json.getString("Apellidos"));
                                     dniEditText.setText(json.getString("DNI"));
-                                    currentMoneyEditText.setText(Integer.toString(json.getInt("creditos")));
-                                    creditos = json.getInt("creditos");
+                                    currentMoneyEditText.setText(Integer.toString(json.getInt("Creditos")));
+                                    creditos = json.getInt("Creditos");
                                     idAsistente = json.getString("ID_Asistente");
                                 }
                             } catch (JSONException e) {

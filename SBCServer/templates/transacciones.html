@@ -113,7 +113,7 @@
                                     <td>{{movimiento.Apellidos}}</td>
                                     <td>{{movimiento.DNI}}</td>
                                     <td>{{movimiento.hora}}</td>
-                                    <td>{%if movimiento.modo_pago == 0%}-{%endif%}{{movimiento.creditos}}</td>
+                                    <td>{%if movimiento.modo_pago == 1%}-{%endif%}{{movimiento.creditos}}</td>
                                 </tr>
                             {% endfor %}                        
                         </tbody>

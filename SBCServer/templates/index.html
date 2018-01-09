@@ -61,36 +61,36 @@
             <div class="col-md-12 col-sm-12 col-xs-6">
               <h5>Aforos</h5>
               <div>
-                <p>{{data.Top_Salas[0].Nombre}}</p>
+                <p>{%if data.Top_Salas != ()%}{{data.Top_Salas[0].Nombre}}{%endif%}</p>
                 <div class="">
-                  <div class="progress progress_sm" style="width: 76%;" data-toggle="tooltip" title="{{'%0.2f' % data.Top_Salas[0].Porcentaje_Aforo|float}} %">
-                    <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="{{'%0.2f' % data.Top_Salas[0].Porcentaje_Aforo|float}}"></div>
+                  <div class="progress progress_sm" style="width: 76%;" data-toggle="tooltip" title="{%if data.Top_Salas != ()%}{{'%0.2f' % data.Top_Salas[0].Porcentaje_Aforo|float}}{%endif%} %">
+                    <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="{%if data.Top_Salas != ()%}{{'%0.2f' % data.Top_Salas[0].Porcentaje_Aforo|float}}{%endif%}"></div>
                   </div>
                 </div>
               </div>
               <div>
-                <p>{{data.Top_Salas[1].Nombre}}</p>
+                <p>{%if data.Top_Salas != ()%}{{data.Top_Salas[1].Nombre}}{%endif%}</p>
                 <div class="">
-                  <div class="progress progress_sm" style="width: 76%;" data-toggle="tooltip" title="{{'%0.2f' % data.Top_Salas[1].Porcentaje_Aforo|float}} %">
-                    <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="{{'%0.2f' % data.Top_Salas[1].Porcentaje_Aforo|float}}"></div>
+                  <div class="progress progress_sm" style="width: 76%;" data-toggle="tooltip" title="{%if data.Top_Salas != ()%}{{'%0.2f' % data.Top_Salas[1].Porcentaje_Aforo|float}}{%endif%} %">
+                    <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="{%if data.Top_Salas != ()%}{{'%0.2f' % data.Top_Salas[1].Porcentaje_Aforo|float}}{%endif%}"></div>
                   </div>
                 </div>
               </div>
             </div>
             <div class="col-md-12 col-sm-12 col-xs-6">
               <div>
-                <p>{{data.Top_Salas[2].Nombre}}</p>
+                <p>{%if data.Top_Salas != ()%}{{data.Top_Salas[2].Nombre}}{%endif%}</p>
                 <div class="">
-                  <div class="progress progress_sm" style="width: 76%;" data-toggle="tooltip" title="{{'%0.2f' % data.Top_Salas[2].Porcentaje_Aforo|float}} %">
-                    <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="{{'%0.2f' % data.Top_Salas[2].Porcentaje_Aforo|float}}"></div>
+                  <div class="progress progress_sm" style="width: 76%;" data-toggle="tooltip" title="{%if data.Top_Salas != ()%}{{'%0.2f' % data.Top_Salas[2].Porcentaje_Aforo|float}}{%endif%} %">
+                    <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="{%if data.Top_Salas != ()%}{{'%0.2f' % data.Top_Salas[2].Porcentaje_Aforo|float}}{%endif%}"></div>
                   </div>
                 </div>
               </div>
               <div>
-                <p>{{data.Top_Salas[3].Nombre}}</p>
+                <p>{%if data.Top_Salas != ()%}{{data.Top_Salas[3].Nombre}}{%endif%}</p>
                 <div class="">
-                  <div class="progress progress_sm" style="width: 76%;" data-toggle="tooltip" title="{{'%0.2f' % data.Top_Salas[3].Porcentaje_Aforo|float}} %">
-                    <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="{{'%0.2f' % data.Top_Salas[3].Porcentaje_Aforo|float}}"></div>
+                  <div class="progress progress_sm" style="width: 76%;" data-toggle="tooltip" title="{%if data.Top_Salas != ()%}{{'%0.2f' % data.Top_Salas[3].Porcentaje_Aforo|float}}{%endif%} %">
+                    <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="{%if data.Top_Salas != ()%}{{'%0.2f' % data.Top_Salas[3].Porcentaje_Aforo|float}}{%endif%}"></div>
                   </div>
                 </div>
               </div>

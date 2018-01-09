@@ -101,10 +101,10 @@ def getDataAsistentes():
     cur.execute('''SELECT (Asistentes_En_Sala/Asistentes*100) AS Porcentaje_En_Sala FROM (SELECT COUNT(ASISTENTE_SALA.ID_Asistente) AS Asistentes_En_Sala, COUNT(ASISTENTE.ID_Asistente) AS Asistentes FROM ASISTENTE_SALA RIGHT JOIN ASISTENTE ON ASISTENTE_SALA.ID_Asistente = ASISTENTE.ID_Asistente) AS COUNTS_ASISTENTES''')
     rv = cur.fetchone()
     data.update(rv)
-    cur.execute('''SELECT SUM(creditos) AS Total_Pagos FROM HISTORIAL_CREDITOS WHERE modo_pago = 1''')
+    cur.execute('''SELECT COALESCE(SUM(creditos),0) AS Total_Pagos FROM HISTORIAL_CREDITOS WHERE modo_pago = 1''')
     rv = cur.fetchone()
     data.update(rv)
-    cur.execute('''SELECT (SUM(creditos)/COUNT(ID_Asistente)) AS Media_Creditos FROM ASISTENTE''')
+    cur.execute('''SELECT (COALESCE(SUM(creditos),0)/COUNT(ID_Asistente)) AS Media_Creditos FROM ASISTENTE''')
     rv = cur.fetchone()
     data.update(rv)
     cur.execute('''SELECT Nombre, Apellidos, DNI, Nivel_Acceso, creditos FROM ASISTENTE''')
@@ -122,7 +122,7 @@ def transacciones():
 def getDataTransacciones():
     data = {}
     cur = mysql.connection.cursor()
-    cur.execute('''SELECT SUM(creditos) AS Total_Creditos FROM ASISTENTE''')
+    cur.execute('''SELECT COALESCE(SUM(creditos),0) AS Total_Creditos FROM ASISTENTE''')
     rv = cur.fetchone()
     data.update(rv)
     cur.execute('''SELECT COALESCE(SUM(creditos),0) AS Total_Pagos FROM HISTORIAL_CREDITOS WHERE DATE(hora) = CURDATE() AND modo_pago = 1''')
@@ -151,10 +151,11 @@ def getDataTransacciones():
     cur.execute('''SELECT SUM(creditos) AS Pagos, HOUR(hora) AS Hora FROM (SELECT creditos, hora FROM HISTORIAL_CREDITOS WHERE DATE(hora) = CURDATE() AND modo_pago=1) AS PAGOS''')
     rv = cur.fetchall()
     for r in rv:
+        print(r["Pagos"])
         if r["Pagos"] != None:
             r["Pagos"]=float(r["Pagos"])
         else:
-            r["Cargas"]=""
+            r["Pagos"]=""
             r["Hora"]=""
     data.update({"Datos_Pagos":rv})
     cur.execute('''SELECT ASISTENTE.Nombre, ASISTENTE.Apellidos, ASISTENTE.DNI, HISTORIAL_CREDITOS.hora, HISTORIAL_CREDITOS.creditos, HISTORIAL_CREDITOS.modo_pago FROM HISTORIAL_CREDITOS JOIN ASISTENTE  ON HISTORIAL_CREDITOS.ID_Asistente = ASISTENTE.ID_Asistente''')
@@ -212,11 +213,12 @@ def set_money():
         id = json["ID_Asistente"]
         creditos = json["creditos"]
         modoPago = json["modo_pago"]
-        query = "UPDATE ASISTENTE SET creditos = %s WHERE ASISTENTE.ID_Asistente = %s;"
+        movimiento = json["movimiento"]
+        query = "UPDATE ASISTENTE SET Creditos = %s WHERE ASISTENTE.ID_Asistente = %s;"
         cur = mysql.connection.cursor()
         cur.execute(query,[creditos,id])
         query = "INSERT INTO HISTORIAL_CREDITOS (ID_Asistente, creditos, modo_pago) VALUES (%s,%s,%s)"
-        cur.execute(query,[id,creditos,modoPago])
+        cur.execute(query,[id,movimiento,modoPago])
         mysql.connection.commit()
         return jsonify(response = "success")
     except:
@@ -227,37 +229,46 @@ def try_access():
     try:
         json = request.get_json()
         tag = json["TAG"]
-        sala = json["ID_Sala"]
-        query = "SELECT Nivel_Acceso FROM SALA WHERE ID_Sala = %s;"#TODO: ver el aforo
+        idSala = json["ID_Sala"]
+        query = "SELECT Nivel_Acceso, Aforo_Act, Aforo_Max FROM SALA WHERE ID_Sala = %s;"
         cur = mysql.connection.cursor()
-        cur.execute(query,[sala])
-        nivelAccesoSala = cur.fetchone().get("Nivel_Acceso")
-        query = "SELECT Nivel_Acceso FROM ASISTENTE WHERE TAG = %s;"
+        cur.execute(query,[idSala])
+        sala = cur.fetchone()
+        nivelAccesoSala = sala.get("Nivel_Acceso")
+        aforoActSala = sala.get("Aforo_Act")
+        aforoMaxSala = sala.get("Aforo_Max")
+        query = "SELECT Nivel_Acceso, ID_Asistente FROM ASISTENTE WHERE TAG = %s;"
         cur = mysql.connection.cursor()
         cur.execute(query,[tag])
-        nivelAccesoAsistente = cur.fetchone().get("Nivel_Acceso")
-        if (nivelAccesoSala>nivelAccesoAsistente):#TODO: comprobar el aforo
+        asistente = cur.fetchone()
+        nivelAccesoAsistente = asistente.get("Nivel_Acceso")
+        idAsistente = asistente.get("ID_Asistente")
+        if (nivelAccesoSala>nivelAccesoAsistente):
             return jsonify(response = "fail", error= "Nivel de acceso insuficiente")
-        query = "INSERT INTO ASISTENTE_SALA (ID_Sala, ID_Asistente) VALUES (%s,(SELECT ID_Asistente FROM ASISTENTE WHERE ASISTENTE.TAG = %s)) ;"
+        if (aforoActSala+1>aforoMaxSala):
+            return jsonify(response = "fail", error= "Se ha alcanzado el aforo maximo")
+        query = "INSERT INTO ASISTENTE_SALA (ID_Sala, ID_Asistente) VALUES (%s,%s) ;"
         cur = mysql.connection.cursor()
-        cur.execute(query,[sala,tag])
-        query = "INSERT INTO HISTORIAL (ID_Sala, ID_Asistente) VALUES (%s,(SELECT ID_Asistente FROM ASISTENTE WHERE ASISTENTE.TAG = %s)) ;"
-        cur.execute(query,[sala,tag])
+        cur.execute(query,[idSala,idAsistente])
+        query = "INSERT INTO HISTORIAL (ID_Sala, ID_Asistente) VALUES (%s,%s) ;"
+        cur.execute(query,[idSala,idAsistente])
+        query = "UPDATE SALA SET Aforo_Act = %s WHERE ID_Sala = %s ;"
+        cur.execute(query,[aforoActSala+1, idSala])
         mysql.connection.commit()
         return jsonify(response = "success")
     except:
         try:
-            query = "UPDATE ASISTENTE_SALA SET ID_Sala = %s WHERE ASISTENTE_SALA.ID_Asistente = (SELECT ID_Asistente FROM ASISTENTE WHERE ASISTENTE.TAG = %s);"
+            query = "UPDATE ASISTENTE_SALA SET ID_Sala = %s WHERE ASISTENTE_SALA.ID_Asistente = %s;"
             cur = mysql.connection.cursor()
-            cur.execute(query,[sala,tag])
+            cur.execute(query,[idSala,idAsistente])
             mysql.connection.commit()
             if(cur.rowcount == 0):
                 return jsonify(response = "fail", error= "El asistenete ya esta en la sala")
             else:
-                query = "UPDATE HISTORIAL SET Hora_Salida = NOW() WHERE HISTORIAL.ID_Asistente = (SELECT ID_Asistente FROM ASISTENTE WHERE ASISTENTE.TAG = %s) AND HISTORIAL.Hora_Salida IS NULL ;"
-                cur.execute(query,[tag])
-                query = "INSERT INTO HISTORIAL (ID_Sala, ID_Asistente) VALUES (%s,(SELECT ID_Asistente FROM ASISTENTE WHERE ASISTENTE.TAG = %s)) ;"
-                cur.execute(query,[sala,tag])
+                query = "UPDATE HISTORIAL SET Hora_Salida = NOW() WHERE HISTORIAL.ID_Asistente = %s AND HISTORIAL.Hora_Salida IS NULL ;"
+                cur.execute(query,[idAsistente])
+                query = "INSERT INTO HISTORIAL (ID_Sala, ID_Asistente) VALUES (%s,%s) ;"
+                cur.execute(query,[idSala,idAsistente])
                 mysql.connection.commit()
                 return jsonify(response = "success")
         except:
@@ -275,6 +286,9 @@ def exit_room():
         query = "DELETE FROM ASISTENTE_SALA WHERE ASISTENTE_SALA.ID_Asistente = (SELECT ID_Asistente FROM ASISTENTE WHERE ASISTENTE.TAG = %s);"
         cur = mysql.connection.cursor()
         cur.execute(query,[tag])
+        query = "UPDATE SALA SET Aforo_Act = Aforo_Act -1 WHERE ID_Sala = %s;"
+        cur = mysql.connection.cursor()
+        cur.execute(query,[id])
         mysql.connection.commit()
         return jsonify(response = "success")
     except:

@@ -103,7 +103,12 @@ public class PaymentFragment extends Fragment{
         mBtSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updateMoneyAmount();
+                if(creditos>=moneyToPay){
+                    updateMoneyAmount();
+                }else {
+                    Toast.makeText(getActivity().getApplicationContext(),R.string.creditos_insuficientes,Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
         mBtAdd.setOnClickListener(new View.OnClickListener() {
@@ -146,6 +151,7 @@ public class PaymentFragment extends Fragment{
                 jsonObj.put("ID_Asistente", idAsistente);
                 jsonObj.put("creditos", creditos-moneyToPay);
                 jsonObj.put("modo_pago", 1);
+                jsonObj.put("movimiento", moneyToPay);
                 Log.d(TAG,jsonObj.toString());
 
                 JsonObjectRequest jsObjRequest = new JsonObjectRequest
@@ -157,7 +163,7 @@ public class PaymentFragment extends Fragment{
                                 try {
                                     if(response.getString("response").equals("success")){
                                         currentMoneyEditText.setText(Integer.toString(creditos-moneyToPay));
-                                        Toast.makeText(getActivity().getApplicationContext(),R.string.creditos_añadidos_correctamente,Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getActivity().getApplicationContext(),R.string.creditos_pagados_correctamente,Toast.LENGTH_LONG).show();
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -212,8 +218,8 @@ public class PaymentFragment extends Fragment{
                                     nameEditText.setText(json.getString("Nombre"));
                                     lastnameEditText.setText(json.getString("Apellidos"));
                                     dniEditText.setText(json.getString("DNI"));
-                                    currentMoneyEditText.setText(Integer.toString(json.getInt("creditos")));
-                                    creditos = json.getInt("creditos");
+                                    currentMoneyEditText.setText(Integer.toString(json.getInt("Creditos")));
+                                    creditos = json.getInt("Creditos");
                                     idAsistente = json.getString("ID_Asistente");
                                 }
                             } catch (JSONException e) {

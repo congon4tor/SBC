@@ -51,9 +51,10 @@
     <string name="payment_money_hint">Creditos actuales</string>
     <string name="payment_remove_money_hint">Creditos a pagar</string>
 
-    <string name="serverhost">http://192.168.1.43:5000</string>
+    <string name="serverhost">http://192.168.0.113:5000</string>
 
     <string name="creditos_añadidos_correctamente">Creditos añadidos correctamente</string>
     <string name="creditos_pagados_correctamente">Pago realizado correctamente</string>
+    <string name="creditos_insuficientes">"Creditos insuficientes"</string>
 
 </resources>
