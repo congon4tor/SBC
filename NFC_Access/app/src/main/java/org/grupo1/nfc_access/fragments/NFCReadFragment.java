@@ -56,7 +56,7 @@ public class NFCReadFragment extends DialogFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         mListener = (MainActivity)context;
-        mListener.onDialogDisplayed(false,null);
+        mListener.onDialogDisplayed();
     }
 
     @Override
@@ -73,8 +73,10 @@ public class NFCReadFragment extends DialogFragment {
         String message = "";
         try {
             ndef.connect();
-            NdefMessage ndefMessage = ndef.getNdefMessage();
-            message = new String(ndefMessage.getRecords()[0].getPayload());
+            Log.d(TAG, "Tag ID: "+String.format("%02X",ndef.getTag().getId()[0])+String.format(" %02X",ndef.getTag().getId()[1])+String.format(" %02X",ndef.getTag().getId()[2])+String.format(" %02X",ndef.getTag().getId()[3]));
+            message = String.format("%02X",ndef.getTag().getId()[0])+String.format(" %02X",ndef.getTag().getId()[1])+String.format(" %02X",ndef.getTag().getId()[2])+String.format(" %02X",ndef.getTag().getId()[3]);
+//            NdefMessage ndefMessage = ndef.getNdefMessage();
+//            message = new String(ndefMessage.getRecords()[0].getPayload());
             successSound.start();
             if (Build.VERSION.SDK_INT >= 26) {
                 createOneShotVibrationUsingVibrationEffect();

@@ -34,7 +34,7 @@ public class AddMoneyFragment extends Fragment{
 
     private FloatingActionButton mBtNFC;
     private FloatingActionButton mBtSend;
-    public FloatingActionButton mBtAdd;
+    private FloatingActionButton mBtAdd;
     private FloatingActionButton mBtSub;
     private EditText moneyEditText;
     private EditText nameEditText;

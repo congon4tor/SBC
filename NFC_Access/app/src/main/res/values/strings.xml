@@ -34,11 +34,7 @@
     <string name="javier_fernandez">Javier Fernandez</string>
     <string name="ionut_daniel_motofelea">Ionut Daniel Motofelea</string>
 
-    <string name="message_write_error">¡Error grabando tarjeta!</string>
-    <string name="message_write_success">¡Tarjeta grabada correctamente!</string>
-    <string name="message_write_progress">Grabando tarjeta…</string>
     <string name="message_tag_detected">¡Tarjeta detectada!</string>
-    <string name="message_write_tag">Grabar datos en la tarjeta</string>
     <string name="message_tap_tag">Aproxime la tarjeta al dispositivo</string>
 
     <string name="message_read_tag">Leer datos de la tarjeta</string>
@@ -51,8 +47,9 @@
     <string name="payment_money_hint">Creditos actuales</string>
     <string name="payment_remove_money_hint">Creditos a pagar</string>
 
-    <string name="serverhost">http://192.168.0.113:5000</string>
+    <string name="serverhost">http://192.168.1.45:5000</string>
 
+    <string name="asistente_añadidos_correctamente">Asistente añadido correctamente</string>
     <string name="creditos_añadidos_correctamente">Creditos añadidos correctamente</string>
     <string name="creditos_pagados_correctamente">Pago realizado correctamente</string>
     <string name="creditos_insuficientes">"Creditos insuficientes"</string>

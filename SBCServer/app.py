@@ -180,14 +180,14 @@ def new_user():
     try:
         json = request.get_json()
         dni = json["DNI"]
-        tag = generate_password_hash(dni)
         nombre = json["Nombre"]
         apellidos = json["Apellidos"]
         nivel = json["Nivel_Acceso"]
+        tag = json["tag"]
         cur = mysql.connection.cursor()
         cur.execute('''INSERT INTO ASISTENTE (ID_Asistente, DNI, TAG, Nombre, Apellidos, Nivel_Acceso) VALUES (NULL,%s,%s,%s,%s,%s)''',(dni,tag,nombre,apellidos,nivel))
         mysql.connection.commit()
-        return jsonify(response = "success", TAG = tag)
+        return jsonify(response = "success")
     except:
         return jsonify(response = "fail")
 
@@ -237,16 +237,16 @@ def try_access():
         nivelAccesoSala = sala.get("Nivel_Acceso")
         aforoActSala = sala.get("Aforo_Act")
         aforoMaxSala = sala.get("Aforo_Max")
-        query = "SELECT Nivel_Acceso, ID_Asistente FROM ASISTENTE WHERE TAG = %s;"
+        query = "SELECT Nivel_Acceso, ID_Asistente, Nombre, Apellidos FROM ASISTENTE WHERE TAG = %s;"
         cur = mysql.connection.cursor()
         cur.execute(query,[tag])
         asistente = cur.fetchone()
         nivelAccesoAsistente = asistente.get("Nivel_Acceso")
         idAsistente = asistente.get("ID_Asistente")
         if (nivelAccesoSala>nivelAccesoAsistente):
-            return jsonify(response = "fail", error= "Nivel de acceso insuficiente")
+            return jsonify(response = "fail", error= "Acceso denegado")
         if (aforoActSala+1>aforoMaxSala):
-            return jsonify(response = "fail", error= "Se ha alcanzado el aforo maximo")
+            return jsonify(response = "fail", error= "Aforo completo")
         query = "INSERT INTO ASISTENTE_SALA (ID_Sala, ID_Asistente) VALUES (%s,%s) ;"
         cur = mysql.connection.cursor()
         cur.execute(query,[idSala,idAsistente])
@@ -255,7 +255,7 @@ def try_access():
         query = "UPDATE SALA SET Aforo_Act = %s WHERE ID_Sala = %s ;"
         cur.execute(query,[aforoActSala+1, idSala])
         mysql.connection.commit()
-        return jsonify(response = "success")
+        return jsonify(response = "success", nombre = asistente.get("Nombre"), apellidos = asistente.get("Apellidos"), aforo=aforoActSala+1)
     except:
         try:
             query = "UPDATE ASISTENTE_SALA SET ID_Sala = %s WHERE ASISTENTE_SALA.ID_Asistente = %s;"
@@ -270,7 +270,7 @@ def try_access():
                 query = "INSERT INTO HISTORIAL (ID_Sala, ID_Asistente) VALUES (%s,%s) ;"
                 cur.execute(query,[idSala,idAsistente])
                 mysql.connection.commit()
-                return jsonify(response = "success")
+                return jsonify(response = "success", nombre = asistente.get("Nombre"), apellidos = asistente.get("Apellidos"), aforo=aforoActSala+1)
         except:
             return jsonify(response = "fail", error="Ha ocurrido un error")
 
@@ -291,6 +291,19 @@ def exit_room():
         cur.execute(query,[id])
         mysql.connection.commit()
         return jsonify(response = "success")
+    except:
+        return jsonify(response = "fail", error="Ha ocurrido un error")
+
+@app.route('/getRoomData', methods = ['POST'])
+def get_room_data():
+    try:
+        json = request.get_json()
+        idSala = json["ID_Sala"]
+        query = "SELECT Nivel_Acceso, Aforo_Act, Aforo_Max, Nombre FROM SALA WHERE ID_Sala = %s;"
+        cur = mysql.connection.cursor()
+        cur.execute(query,[idSala])
+        sala = cur.fetchone()
+        return jsonify(response = "success", nombre = sala.get("Nombre"), aforo_act = sala.get("Aforo_Act"), aforo_max = sala.get("Aforo_Max"), nivel_acceso = sala.get("Nivel_Acceso"))
     except:
         return jsonify(response = "fail", error="Ha ocurrido un error")
 

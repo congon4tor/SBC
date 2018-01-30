@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -15,6 +16,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 
+import org.grupo1.nfc_access.MainActivity;
 import org.grupo1.nfc_access.R;
 import org.grupo1.nfc_access.utils.HTTPHandler;
 import org.json.JSONException;
@@ -27,7 +29,7 @@ import org.json.JSONObject;
  */
 public class NewUserFragment extends Fragment{
 
-    public static final String TAG = NFCWriteFragment.class.getSimpleName();
+    public static final String TAG = NewUserFragment.class.getSimpleName();
 
     private FloatingActionButton mBtWrite;
     private EditText mNombreEditText;
@@ -35,7 +37,7 @@ public class NewUserFragment extends Fragment{
     private EditText mDNIEditText;
     private EditText mNivelEditText;
 
-    private NFCWriteFragment mNfcWriteFragment;
+    private NFCReadFragment mNfcReadFragment;
 
     public NewUserFragment() {
         // Required empty public constructor
@@ -68,22 +70,32 @@ public class NewUserFragment extends Fragment{
         mDNIEditText = v.findViewById(R.id.DNI);
         mNivelEditText = v.findViewById(R.id.accessLevel);
 
+        ((MainActivity)getActivity()).passVal(new FragmentCommunicator() {
+
+            @Override
+            public void passTag(String tag) {
+                createNewUser(mDNIEditText.getText().toString(), mNombreEditText.getText().toString(),mApellidosEditText.getText().toString(),mNivelEditText.getText().toString(),tag);
+
+            }
+        });
+
         mBtWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createNewUser(mDNIEditText.getText().toString(), mNombreEditText.getText().toString(),mApellidosEditText.getText().toString(),mNivelEditText.getText().toString());
+                showReadFragment();
             }
         });
         return v;
     }
 
-    private String createNewUser(String dni, String nombre, String apellidos, String nivel){
+    private String createNewUser(String dni, String nombre, String apellidos, String nivel, String tag){
         JSONObject jsonObj = new JSONObject();
         try {
             jsonObj.put("DNI", dni);
             jsonObj.put("Nombre", nombre);
             jsonObj.put("Apellidos", apellidos);
             jsonObj.put("Nivel_Acceso", nivel);
+            jsonObj.put("tag", tag);
 
             JsonObjectRequest jsObjRequest = new JsonObjectRequest
                     (Request.Method.POST, getResources().getString(R.string.serverhost)+"/newUser", jsonObj, new Response.Listener<JSONObject>() {
@@ -93,7 +105,7 @@ public class NewUserFragment extends Fragment{
                             Log.d(TAG,"Response: " + response.toString());
                             try {
                                 if(response.getString("response").equals("success")){
-                                    showWriteFragment(response.getString("TAG"));
+                                    Toast.makeText(getActivity().getApplicationContext(),R.string.asistente_añadidos_correctamente,Toast.LENGTH_LONG).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -114,15 +126,15 @@ public class NewUserFragment extends Fragment{
         return "";
     }
 
-    private void showWriteFragment(String tag) {
+    private void showReadFragment() {
 
-        mNfcWriteFragment = (NFCWriteFragment) getActivity().getFragmentManager().findFragmentByTag(NFCWriteFragment.TAG);
+        mNfcReadFragment =  (NFCReadFragment) getActivity().getFragmentManager().findFragmentByTag(NFCReadFragment.TAG);
 
-        if (mNfcWriteFragment == null) {
+        if (mNfcReadFragment == null) {
 
-            mNfcWriteFragment = NFCWriteFragment.newInstance(tag);
+            mNfcReadFragment = NFCReadFragment.newInstance();
         }
-        mNfcWriteFragment.show(getActivity().getFragmentManager(),NFCWriteFragment.TAG);
+        mNfcReadFragment.show(getActivity().getFragmentManager(),NFCReadFragment.TAG);
 
     }
 }

@@ -1,15 +1,5 @@
-{% extends "base_site.html" %} 
-
-{% block title %} {{data.Sala.Nombre}} {% endblock title %} 
-
-{% block top_nav_title %}{{data.Sala.Nombre}}{% endblock top_nav_title %} 
-
-{% block stylesheets %} 
-{{ super() }} 
-<link href="{{ url_for('static', filename='vendors/datatables.net-bs/css/dataTables.bootstrap.min.css') }}" rel="stylesheet">
-{% endblock stylesheets %} 
-
-{% block content %}
+{% extends "base_site.html" %} {% block title %} {{data.Sala.Nombre}} {% endblock title %} {% block top_nav_title %}{{data.Sala.Nombre}}{% endblock top_nav_title %} {% block stylesheets %} {{ super() }}
+<link href="{{ url_for('static', filename='vendors/datatables.net-bs/css/dataTables.bootstrap.min.css') }}" rel="stylesheet"> {% endblock stylesheets %} {% block content %}
 <div class="right_col" role="main">
     <!-- top tiles -->
     <div class="row">
@@ -33,7 +23,7 @@
                     </div>
                     <div class="col-md-3 col-sm-3 col-xs-12 tile_stats_count text-center">
                         <span class="count_top">
-                            <i class="fa fa-clock-o"></i> Media de tiempo en sala</span>
+                            <i class="fa fa-clock-o"></i> Media de tiempo en sala (Mins)</span>
                         <div class="count blue">{{"%.2f"% data.Tiempo_Medio|float}}</div>
                     </div>
                 </div>
@@ -110,13 +100,13 @@
 
                         <tbody>
                             {% for acceso in data.Accesos %}
-                                <tr>
-                                    <td>{{acceso.Nombre}}</td>
-                                    <td>{{acceso.Apellidos}}</td>
-                                    <td>{{acceso.DNI}}</td>
-                                    <td>{{acceso.Hora_Entrada}}</td>
-                                    <td>{{acceso.Hora_Salida}}</td>
-                                </tr>
+                            <tr>
+                                <td>{{acceso.Nombre}}</td>
+                                <td>{{acceso.Apellidos}}</td>
+                                <td>{{acceso.DNI}}</td>
+                                <td>{{acceso.Hora_Entrada}}</td>
+                                <td>{{acceso.Hora_Salida}}</td>
+                            </tr>
                             {% endfor %}
                         </tbody>
                     </table>
@@ -126,10 +116,7 @@
         </div>
     </div>
 </div>
-{% endblock content %} 
-
-{% block javascripts %} 
-{{ super()}}
+{% endblock content %} {% block javascripts %} {{ super()}}
 <meta id="my-data" data-aforo="{{data.Aforo}}" data-entradas="{{data.Datos_Entradas}}" data-salidas="{{data.Datos_Salidas}}">
 
 

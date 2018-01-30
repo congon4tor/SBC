@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
@@ -26,7 +25,6 @@ import org.grupo1.nfc_access.fragments.AddMoneyFragment;
 import org.grupo1.nfc_access.fragments.FragmentCommunicator;
 import org.grupo1.nfc_access.fragments.Listener;
 import org.grupo1.nfc_access.fragments.NFCReadFragment;
-import org.grupo1.nfc_access.fragments.NFCWriteFragment;
 import org.grupo1.nfc_access.fragments.NewUserFragment;
 import org.grupo1.nfc_access.fragments.PaymentFragment;
 
@@ -38,14 +36,8 @@ public class MainActivity extends AppCompatActivity
 
 
     private boolean isDialogDisplayed = false;
-    private boolean isWrite = false;
-    private String messageToWrite = "";
-    private String messageRead = "";
 
     private NfcAdapter mNfcAdapter;
-
-    private NFCWriteFragment mNfcWriteFragment;
-    private NFCReadFragment mNfcReadFragment;
 
     FragmentCommunicator fragmentCommunicator;
 
@@ -102,7 +94,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -140,21 +131,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onDialogDisplayed(boolean isWrite, String messageToWrite) {
-
+    public void onDialogDisplayed() {
         isDialogDisplayed = true;
-        this.isWrite = isWrite;
-        if(isWrite){
-            Log.d(TAG,messageToWrite);
-            this.messageToWrite = messageToWrite;
-        }
     }
 
     @Override
     public void onDialogDismissed() {
 
         isDialogDisplayed = false;
-        isWrite = false;
     }
 
     @Override
@@ -188,19 +172,9 @@ public class MainActivity extends AppCompatActivity
         if(tag != null && isDialogDisplayed) {
             Toast.makeText(this, getString(R.string.message_tag_detected), Toast.LENGTH_SHORT).show();
             Ndef ndef = Ndef.get(tag);
-            if (isWrite) {
-
-                Log.d(TAG, "tag: "+this.messageToWrite);
-
-                mNfcWriteFragment = (NFCWriteFragment) getFragmentManager().findFragmentByTag(NFCWriteFragment.TAG);
-                mNfcWriteFragment.onNfcDetected(ndef,this.messageToWrite);
-
-            } else {
-
-                mNfcReadFragment = (NFCReadFragment) getFragmentManager().findFragmentByTag(NFCReadFragment.TAG);
-                messageRead = mNfcReadFragment.onNfcDetected(ndef);
-                fragmentCommunicator.passTag(messageRead);
-            }
+            NFCReadFragment mNfcReadFragment = (NFCReadFragment) getFragmentManager().findFragmentByTag(NFCReadFragment.TAG);
+            String messageRead = mNfcReadFragment.onNfcDetected(ndef);
+            fragmentCommunicator.passTag(messageRead);
         }
     }
 
